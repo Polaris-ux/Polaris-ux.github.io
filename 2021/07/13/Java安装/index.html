@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="Java安装"><meta name="keywords" content="Linux,Java安装"><meta name="author" content="Laity&amp;"><meta name="copyright" content="Laity&amp;"><title>Java安装 | Laity的日常博客</title><link rel="shortcut icon" href="/melody-favicon.ico"><link rel="stylesheet" href="/css/index.css?version=1.9.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.9.0"><meta name="format-detection" content="telephone=no"><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script src="https://v1.hitokoto.cn/?encode=js&amp;charset=utf-8&amp;select=.footer_custom_text" defer></script><script>var GLOBAL_CONFIG = { 
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="Java安装"><meta name="keywords" content="Linux"><meta name="author" content="Laity&amp;"><meta name="copyright" content="Laity&amp;"><title>Java安装 | Laity的日常博客</title><link rel="shortcut icon" href="/melody-favicon.ico"><link rel="stylesheet" href="/css/index.css?version=1.9.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.9.0"><meta name="format-detection" content="telephone=no"><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script src="https://v1.hitokoto.cn/?encode=js&amp;charset=utf-8&amp;select=.footer_custom_text" defer></script><script>var GLOBAL_CONFIG = { 
   root: '/',
   algolia: undefined,
   localSearch: undefined,
@@ -16,26 +16,20 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir jdk<span class="comment">#文件名可以随便取</span></span><br></pre></td></tr></table></figure>
 
 <p>将下载好的jdk-8u291-linux-x64.tar.gz通过xshell传输到linux下的<code>/usr/local/jdk</code>中</p>
-<img src="/Polaris-ux/Polaris-ux.github/07/13/Java%E5%AE%89%E8%A3%85/image-20210713230043661.png" class title="image-20210713230043661">
-
+<p><img src="/Polaris-ux/Polaris-ux.github/image-20210713230043661.png" alt="image-20210713230043661"></p>
 <p>传输到文件目录下</p>
-<img src="/Polaris-ux/Polaris-ux.github/07/13/Java%E5%AE%89%E8%A3%85/image-20210713225957847.png" class title="image-20210713225957847">
-
+<p><img src="/Polaris-ux/Polaris-ux.github/image-20210713225957847.png" alt="image-20210713225957847"></p>
 <p>使用命令进行解压到当前目录下</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tar -xzvf jdk-8u291-linux-x64.tar.gz</span><br></pre></td></tr></table></figure>
 
-<img src="/Polaris-ux/Polaris-ux.github/07/13/Java%E5%AE%89%E8%A3%85/image-20210713230055548.png" class title="image-20210713230055548">
-
-
-
+<p><img src="/Polaris-ux/Polaris-ux.github/image-20210713230055548.png" alt="image-20210713230055548"></p>
 <h4 id="编写配置文件，配置环境变量"><a href="#编写配置文件，配置环境变量" class="headerlink" title="编写配置文件，配置环境变量"></a>编写配置文件，配置环境变量</h4><p>使用命令</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim /etc/profile</span><br></pre></td></tr></table></figure>
 
 <p>按”i”进入编辑模式，添加上下面的内容：</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">export JAVA_HOME=/usr/local/jdk/jdk1.8.0_291</span><br><span class="line">export PATH=$JAVA_HOME/bin:$PATH</span><br><span class="line">export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar</span><br><span class="line">export JRE_HOME=$JAVA_HOME/jre</span><br></pre></td></tr></table></figure>
 
-<img src="/Polaris-ux/Polaris-ux.github/07/13/Java%E5%AE%89%E8%A3%85/image-20210713230119200.png" class title="image-20210713230119200">
-
+<p><img src="/Polaris-ux/Polaris-ux.github/image-20210713230119200.png" alt="image-20210713230119200"></p>
 <p>添加后，按“ESC”退出编辑模式，并<code>:wq</code>进行保存修改内容。（若没有使用修改内容不会保存）</p>
 <p>最后还要使用命令,使配置的环境变量生效</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">source</span> /etc/profile</span><br></pre></td></tr></table></figure>
@@ -43,10 +37,9 @@
 
 
 <p>安装完毕后，使用命令<code>java -version</code>查看是否安装成功</p>
-<img src="/Polaris-ux/Polaris-ux.github/07/13/Java%E5%AE%89%E8%A3%85/image-20210713230142680.png" class title="image-20210713230142680">
-
+<p><img src="/Polaris-ux/Polaris-ux.github/image-20210713230142680.png" alt="image-20210713230142680"></p>
 <p>出现上面图片中的内容，说明安装成功</p>
-</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Laity&amp;</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://github.com/Polaris-ux/Polaris-ux.github.io/2021/07/13/Java安装/">https://github.com/Polaris-ux/Polaris-ux.github.io/2021/07/13/Java安装/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Linux-Java%E5%AE%89%E8%A3%85/">Linux,Java安装</a></div><nav id="pagination"><div class="next-post pull-right"><a href="/2021/07/13/nacos%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83/"><span>nacos配置中心</span><i class="fa fa-chevron-right"></i></a></div></nav><div id="disqus_thread"></div><script>var unused = null;
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Laity&amp;</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://github.com/Polaris-ux/Polaris-ux.github.io/2021/07/13/Java安装/">https://github.com/Polaris-ux/Polaris-ux.github.io/2021/07/13/Java安装/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Linux/">Linux</a></div><nav id="pagination"><div class="next-post pull-right"><a href="/2021/07/13/nacos%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83/"><span>nacos配置中心</span><i class="fa fa-chevron-right"></i></a></div></nav><div id="disqus_thread"></div><script>var unused = null;
 var disqus_config = function () {
   this.page.url = 'https://github.com/Polaris-ux/Polaris-ux.github.io/2021/07/13/Java%E5%AE%89%E8%A3%85/';
   this.page.identifier = '2021/07/13/Java安装/';
