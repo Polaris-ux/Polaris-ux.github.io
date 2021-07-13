@@ -20,10 +20,10 @@
 <p>nacos配置中心：系统配置的集中管理（编辑、存储、分发）、动态更新不重启、回滚配置（变更管理、历史版本管理、变更审计）等所有与配置相关的活动。</p>
 <h4 id="读取Nacos配置中心的配置文件"><a href="#读取Nacos配置中心的配置文件" class="headerlink" title="读取Nacos配置中心的配置文件"></a>读取Nacos配置中心的配置文件</h4><ul>
 <li><p>在Nacos创建同一配置文件</p>
-<p><img src="C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20210713173521686.png" alt="image-20210713173521686"></p>
+<p><img src="/Polaris-ux/Polaris-ux.github/Users\HP\AppData\Roaming\Typora\typora-user-images\image-20210713173521686.png" alt="image-20210713173521686"></p>
 </li>
 <li><p>输入配置信息及配置内容</p>
-<p><img src="C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20210713173649714.png" alt="image-20210713173649714"></p>
+<p><img src="/Polaris-ux/Polaris-ux.github/Users\HP\AppData\Roaming\Typora\typora-user-images\image-20210713173649714.png" alt="image-20210713173649714"></p>
 </li>
 <li><p>Data ID的完整规则格式</p>
 <p><strong>${prefix}-${spring.profile.active}.${file-extension}</strong></p>
@@ -52,10 +52,10 @@
 <p>bootstrap.yml 可以理解成系统级别的一些参数配置，这些参数一般是不会变动的。<br>application.yml 可以用来定义应用级别的。</p>
 <h4 id="名称空间切换环境"><a href="#名称空间切换环境" class="headerlink" title="名称空间切换环境"></a>名称空间切换环境</h4><p>在实际开发中，通常有多套不同的环境（默认只有public），那么这个时候可以根据指定的环境来创建不同的 namespce，例如，开发、测试和生产三个不同的环境，那么使用一套 nacos 集群可以分别建以下三个不同的 namespace。以此来实现多环境的隔离。</p>
 <p><strong>创建命名空间</strong>：</p>
-<p><img src="C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20210713175003006.png" alt="image-20210713175003006"></p>
+<p><img src="/Polaris-ux/Polaris-ux.github/Users\HP\AppData\Roaming\Typora\typora-user-images\image-20210713175003006.png" alt="image-20210713175003006"></p>
 <p>在不同命名空间中，可以直接创建配置文件，也可以从其它命名空间中克隆配置（推荐）。</p>
 <h4 id="多配置文件加载"><a href="#多配置文件加载" class="headerlink" title="多配置文件加载"></a>多配置文件加载</h4><p>在一些情况下需要加载多个配置文件。假如现在dev名称空间下有三个配置文件：service-statistics.properties、redis.properties、jdbc.properties</p>
-<p><img src="C:\Users\HP\AppData\Roaming\Typora\typora-user-images\image-20210713175320743.png" alt="image-20210713175320743"></p>
+<p><img src="/Polaris-ux/Polaris-ux.github/Users\HP\AppData\Roaming\Typora\typora-user-images\image-20210713175320743.png" alt="image-20210713175320743"></p>
 <p><strong>添加配置，加载多个配置文件</strong></p>
 <p>properties格式：</p>
 <figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="meta">spring.cloud.nacos.config.server-addr</span>=<span class="string">127.0.0.1:8848</span></span><br><span class="line"></span><br><span class="line"><span class="meta">spring.profiles.active</span>=<span class="string">dev</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"># 该配置影响统一配置中心中的dataId，之前已经配置过</span></span><br><span class="line"><span class="meta">spring.application.name</span>=<span class="string">service-statistics</span></span><br><span class="line"></span><br><span class="line"><span class="meta">spring.cloud.nacos.config.namespace</span>=<span class="string">13b5c197-de5b-47e7-9903-ec0538c9db01</span></span><br><span class="line"></span><br><span class="line"><span class="meta">spring.cloud.nacos.config.ext-config[0].data-id</span>=<span class="string">redis.properties</span></span><br><span class="line"><span class="comment"># 开启动态刷新配置，否则配置文件修改，工程无法感知</span></span><br><span class="line"><span class="meta">spring.cloud.nacos.config.ext-config[0].refresh</span>=<span class="string">true</span></span><br><span class="line"><span class="meta">spring.cloud.nacos.config.ext-config[1].data-id</span>=<span class="string">jdbc.properties</span></span><br><span class="line"><span class="meta">spring.cloud.nacos.config.ext-config[1].refresh</span>=<span class="string">true</span></span><br></pre></td></tr></table></figure>
