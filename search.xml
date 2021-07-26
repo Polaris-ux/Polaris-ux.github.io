@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search> 
+  
+  
+    
+    <entry>
+      <title>Javaweb验证码</title>
+      <link href="/2021/07/27/Javaweb%E9%AA%8C%E8%AF%81%E7%A0%81/"/>
+      <url>/2021/07/27/Javaweb%E9%AA%8C%E8%AF%81%E7%A0%81/</url>
+      
+        <content type="html"><![CDATA[<h4 id="后端实现验证码生成代码："><a href="#后端实现验证码生成代码：" class="headerlink" title="后端实现验证码生成代码："></a>后端实现验证码生成代码：</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">VerificationServlet</span> <span class="keyword">extends</span> <span class="title">HttpServlet</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">        <span class="comment">//让浏览器自动刷新</span></span><br><span class="line">        resp.setHeader(<span class="string">&quot;refresh&quot;</span>,<span class="string">&quot;4&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//在内存中创建一个图片</span></span><br><span class="line">        BufferedImage image = <span class="keyword">new</span> BufferedImage(<span class="number">80</span>, <span class="number">30</span>, BufferedImage.TYPE_INT_RGB);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//得到图片</span></span><br><span class="line">        Graphics2D graphics = (Graphics2D) image.getGraphics();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//设置图片的背景颜色</span></span><br><span class="line">        graphics.setColor(Color.cyan);</span><br><span class="line">        graphics.fillRect(<span class="number">0</span>,<span class="number">0</span>,<span class="number">80</span>,<span class="number">20</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//给图片写数据</span></span><br><span class="line">        graphics.setColor(Color.green);</span><br><span class="line">        graphics.setFont(<span class="keyword">new</span> Font(<span class="keyword">null</span>,Font.CENTER_BASELINE,<span class="number">20</span>));</span><br><span class="line">        graphics.drawString(createRandomNum(),<span class="number">0</span>,<span class="number">20</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//告诉浏览器，这个请求用图片的方式打开</span></span><br><span class="line">        resp.setContentType(<span class="string">&quot;image/jpeg&quot;</span>);</span><br><span class="line">        <span class="comment">//网站存在缓存，不让浏览器缓存</span></span><br><span class="line">        resp.setDateHeader(<span class="string">&quot;expires&quot;</span>,-<span class="number">1</span>);</span><br><span class="line">        resp.setHeader(<span class="string">&quot;Cache-Control&quot;</span>,<span class="string">&quot;no-cache&quot;</span>);</span><br><span class="line">        resp.setHeader(<span class="string">&quot;Pragma&quot;</span>,<span class="string">&quot;no-cache&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//把图片写给浏览器</span></span><br><span class="line">        ImageIO.write(image,<span class="string">&quot;jpg&quot;</span>,resp.getOutputStream());</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取随机数</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> String <span class="title">createRandomNum</span><span class="params">()</span></span>&#123;</span><br><span class="line">        Random random = <span class="keyword">new</span> Random();</span><br><span class="line">        String s = random.nextInt(<span class="number">9999</span>) + <span class="string">&quot;&quot;</span>;</span><br><span class="line">        StringBuilder sbl = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span> - s.length(); i++) &#123;</span><br><span class="line">            sbl.append(<span class="string">&quot;&quot;</span>+random.nextInt(<span class="number">9</span>));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> sbl.toString()+s;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doPost</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.doPost(req, resp);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 博客 </category>
+          
+          <category> Java后端 </category>
+          
+          <category> Javaweb </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> servlet,数字验证码 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Javaweb文件下载</title>
+      <link href="/2021/07/27/Javaweb%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD/"/>
+      <url>/2021/07/27/Javaweb%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD/</url>
+      
+        <content type="html"><![CDATA[<h4 id="下载文件步骤"><a href="#下载文件步骤" class="headerlink" title="下载文件步骤"></a>下载文件步骤</h4><ul><li>获取下载文件的路径</li><li>下载的文件名</li><li>获取下载文件的输入流</li><li>创建缓冲区</li><li>获取OutputStream对象</li><li>将FileOutputStream流写入到buffer缓冲区中</li><li>使用OutputStream将缓冲区的数据输出到客户端</li></ul><p>代码：</p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DownloadFileServlet</span> <span class="keyword">extends</span> <span class="title">HttpServlet</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">        <span class="comment">//获取ServletContext</span></span><br><span class="line">        ServletContext context = <span class="keyword">this</span>.getServletContext();</span><br><span class="line">        <span class="comment">//获取文件的路径</span></span><br><span class="line">        String realPath =<span class="string">&quot;D:\\JavaLearn\\project\\Javaweb\\Javawebcode1\\httpServletResponse\\target\\classes\\img\\黑色.jpg&quot;</span>;</span><br><span class="line">        System.out.println(realPath);</span><br><span class="line">        <span class="comment">//获取文件名</span></span><br><span class="line">        String filename = realPath.substring(realPath.lastIndexOf(<span class="string">&quot;\\&quot;</span>)+<span class="number">1</span>);</span><br><span class="line">        <span class="comment">//让浏览器能够支持（Content-Disposition）下载我们需要的东西,中文文件名需要使用URLEncoder编码，否则有可能乱码</span></span><br><span class="line">        resp.setHeader(<span class="string">&quot;Content-Disposition&quot;</span>,<span class="string">&quot;attachment;filename=&quot;</span>+ URLEncoder.encode(filename,<span class="string">&quot;utf-8&quot;</span>));</span><br><span class="line">        <span class="comment">//获取文件输入流</span></span><br><span class="line">        FileInputStream fis = <span class="keyword">new</span> FileInputStream(realPath);</span><br><span class="line">        <span class="comment">//获取输出流</span></span><br><span class="line">        ServletOutputStream os = resp.getOutputStream();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//创建缓冲区</span></span><br><span class="line">        <span class="keyword">int</span> len=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">byte</span>[] arr=<span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>];</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>((len=fis.read(arr))!=-<span class="number">1</span>)&#123;</span><br><span class="line">            os.write(arr,<span class="number">0</span>,len);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//关闭输入输出流</span></span><br><span class="line">        os.close();</span><br><span class="line">        fis.close();</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doPost</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.doPost(req, resp);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 博客 </category>
+          
+          <category> Java后端 </category>
+          
+          <category> Javaweb </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 文件上传,servlet </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Java面试题</title>
+      <link href="/2021/07/26/Java%E9%9D%A2%E8%AF%95%E9%A2%98/"/>
+      <url>/2021/07/26/Java%E9%9D%A2%E8%AF%95%E9%A2%98/</url>
+      
+        <content type="html"><![CDATA[<p><strong>请你谈谈网站是如何进行访问的：</strong></p><ol><li>在浏览器输入域名：回车</li><li>浏览器会查找本机的<strong>C:\Windows\System32\drivers\etc</strong>目录下的<strong>hosts文件</strong>中有没有这个域名的映射<ul><li>有：获取对应的ip地址，通过这个ip，我们可以访问到想要访问的web程序</li><li>没有：去DNS域名解析服务器中找是否存在输入域名，若找到，则返回ip并对该ip进行访问；若没找到，就返回未找到</li></ul></li></ol><p><strong>当浏览器中地址栏输入地址并回车的一瞬间到页面能够显示出来，经历了什么？</strong></p><p>作为客户端，浏览器接收到地址之后，首先会到windows系统文件hosts中查找是否有需要劫持的ip地址，若没有则需要询问DNS域名解析服务器该域名对应的ip地址。（DNS缓存）<br>浏览器缓存，系统缓存，路由器缓存，IPS服务器缓存，根域名服务器缓存，顶级域名服务器缓存，主域名服务器缓存</p><p>获取到正确的ip地址后，客户端会与服务器建立TCP连接（三次握手），（网络层、数据链路层、物理层）</p><p>客户端向服务端发送请求，包含请求行、请求头、请求正文。多种请求方式（GET，POST、PUT等）</p><p>服务端处理请求，并返回响应，包含状态码、响应头、响应体</p><p>浏览器收到响应，解析渲染页面，展示出来</p><p>断开连接（http1.0短连接，http1.1长连接）</p><p><strong>请你聊聊重定向与转发的区别：</strong></p><img src="/2021/07/26/Java%E9%9D%A2%E8%AF%95%E9%A2%98/image-20210727000815878.png" class title="image-20210727000815878"><p>相同点：</p><ul><li>都能实现页面跳转</li></ul><p>不同点：</p><ul><li>请求转发的时候，url不会发生变化</li><li>重定向的时候，url地址栏会发生变化</li><li>重定向需要两次请求，请求转发需要一次请求</li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 博客 </category>
+          
+          <category> Java </category>
+          
+          <category> Java面试 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 面试,Javaweb </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>全排列</title>
+      <link href="/2021/07/25/%E5%85%A8%E6%8E%92%E5%88%97/"/>
+      <url>/2021/07/25/%E5%85%A8%E6%8E%92%E5%88%97/</url>
+      
+        <content type="html"><![CDATA[<h4 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h4><p>给定一个不含重复数字的数组 <code>nums</code> ，返回其 <strong>所有可能的全排列</strong> 。你可以 <strong>按任意顺序</strong> 返回答案。</p><p><strong>示例1：</strong></p><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">输入：nums = [1,2,3]</span><br><span class="line">输出：[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]</span><br></pre></td></tr></table></figure><p><strong>示例2：</strong></p><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">输入：nums = [0,1]</span><br><span class="line">输出：[[0,1],[1,0]]</span><br></pre></td></tr></table></figure><p><strong>示例3：</strong></p><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">输入：nums = [1]</span><br><span class="line">输出：[[1]]</span><br></pre></td></tr></table></figure><p><strong>提示：</strong></p><ul><li><code>1 &lt;= nums.length &lt;= 6</code></li><li><code>-10 &lt;= nums[i] &lt;= 10</code></li><li><code>nums</code> 中的所有整数 <strong>互不相同</strong></li></ul><h4 id="题目分析"><a href="#题目分析" class="headerlink" title="题目分析"></a>题目分析</h4><p>这个题目意思很简单易懂，就是获取所给数组的所有的排列方式，注意这里<strong>的所有</strong>，基本上涉及到求”所有”的题目都能通过回溯法解决</p><p>话不多说，贴代码</p><h4 id="代码："><a href="#代码：" class="headerlink" title="代码："></a>代码：</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//回溯法（一般求所有情况下，回溯法）</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FullPermutation</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        FullPermutation test=<span class="keyword">new</span> FullPermutation();</span><br><span class="line">        <span class="keyword">int</span>[] arr=<span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">0</span>,<span class="number">1</span>&#125;;</span><br><span class="line">        System.out.println(test.permute(arr));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> List&lt;List&lt;Integer&gt;&gt; permute(<span class="keyword">int</span>[] nums) &#123;</span><br><span class="line"></span><br><span class="line">        List&lt;List&lt;Integer&gt;&gt; list=<span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">        Deque&lt;Integer&gt; deque=<span class="keyword">new</span> LinkedList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//定义一个标记数组，标记该元素是否已经使用过</span></span><br><span class="line">        <span class="keyword">int</span>[] flag=<span class="keyword">new</span> <span class="keyword">int</span>[nums.length];</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        backtrack(nums,list,<span class="number">0</span>,deque,flag);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> list;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//回溯</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">backtrack</span><span class="params">(<span class="keyword">int</span>[] nums,List&lt;List&lt;Integer&gt;&gt; list,<span class="keyword">int</span> index,Deque&lt;Integer&gt; deque,<span class="keyword">int</span>[] flag)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(index==nums.length)&#123;</span><br><span class="line">            list.add(<span class="keyword">new</span> ArrayList&lt;&gt;(deque));</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;nums.length; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span>(flag[i]==<span class="number">0</span>)&#123;</span><br><span class="line">                deque.addLast(nums[i]);</span><br><span class="line">                flag[i]=<span class="number">1</span>;</span><br><span class="line">                backtrack(nums,list,index+<span class="number">1</span>,deque,flag);</span><br><span class="line">                deque.removeLast();</span><br><span class="line">                flag[i]=<span class="number">0</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 博客 </category>
+          
+          <category> 算法 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 算法,leetcode,回溯法 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>HBase简单学习</title>
+      <link href="/2021/07/23/HBase%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/"/>
+      <url>/2021/07/23/HBase%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/</url>
+      
+        <content type="html"><![CDATA[<h1 id="Hbase简单记录"><a href="#Hbase简单记录" class="headerlink" title="Hbase简单记录"></a>Hbase简单记录</h1><h3 id="简介："><a href="#简介：" class="headerlink" title="简介："></a>简介：</h3><p>Hbase是一个开源的、分布式的、版本化的非关系型数据库，它利用Hadoop分布式文件系统（HDFS）提供分布式数据存储。</p><p>HBase是一个可以进行随机访问的存取和检索数据的存储平台，存储结构化和半结构化的数据，因此一般的网站可以将网页内容和日志信息都存在HBase里。</p><p>如果数据量不是非常庞大，HBase甚至可以存储非结构化的数据。它不要求数据有预定义的模式，允许动态和灵活的数据模型，也不限制存储数据的类型。</p><p>HBase是非关系型数据库，它不具备关系型数据库的一些特点，例如，它不支持SQL的跨行事务，也不要求数据之间有严格的关系，同时它允许在同一列的不同行中存储不同类型的数据。</p><p>HBase是非惯性型数据库，它不具备关系型数据库的一些特点，是被设计成在一个服务器集群上运行的。</p><h4 id="HBase的特点："><a href="#HBase的特点：" class="headerlink" title="HBase的特点："></a>HBase的特点：</h4><ul><li><p>容量巨大</p><p>HBase的单表可以有百亿行，百万列，可以在横向和纵向两个维度插入数据，具有很大的弹性</p><p>当关系型数据库的单个表的记录在亿级时，查询和写入的性能都会呈现指数级下降，这种庞大的数据量对传统数据库来说是一种灾难，而HBase在限定某个列的情况下对于单表存储百亿甚至更多的数据都没有性能问题</p><p>HBase采用LSM树作为内部数据存储结构，这种结构会周期性地将较小文件合成大文件，以减少对磁盘的访问</p></li><li><p>列存储</p><p>行存储的一张表的数据都放在一起，但在列存储里是按照列分开保存的。在这种情况下，进行数据的插入和更新，行存储会相对容易。而进行行存储时，查询操作需要读取所有的数据，列存储则只需要读取相关列，可以大幅降低系统I/O吞吐量</p></li><li><p>稀疏性</p><p>HBase中的数据都是以字符串形式存储的，为空的列并不占用存储空间，因此HBase的列存储解决了数据稀疏性的问题，在很大程度上节省了存储开销。所以HBase通常可以设计成稀疏矩阵，同时这种方式比较接近实际的应用场景</p></li><li><p>扩展性强</p><p>HBase 工作在 HDFS 之上，理所当然地支持分布式表，也继承了 HDFS 的可扩展性。HBase 的扩展是<strong>横向</strong>的，横向扩展是指在扩展时不需要提升服务器本身的性能，只需<strong>添加服务器到现有集群</strong>即可。</p><p>HBase 表根据 <strong>Region 大小进行分区</strong>，<strong>分别存在集群中不同的节点上</strong>，当添加新的节点时，集群就重新调整，在新的节点启动 HBase 服务器，动态地实现扩展。这里需要指出，HBase 的扩展是<strong>热扩展</strong>，即在不停止现有服务的前提下，可以随时添加或者减少节点。</p></li><li><p>高可靠性</p></li></ul><h3 id="HDFS的原理"><a href="#HDFS的原理" class="headerlink" title="HDFS的原理"></a>HDFS的原理</h3><p>HDFS 是参考 Google 公司的 GFS 实现的，不管是 Google 公司的计算平台还是 Hadoop 计算平台，都是运行在大量普通商用计算机上的，这些计算机节点很容易出现硬件故障，而这两种计算平台都将硬件故障作为常态，通过软件设计来保证系统的可靠性。</p><h4 id="HDFS的基本架构"><a href="#HDFS的基本架构" class="headerlink" title="HDFS的基本架构"></a>HDFS的基本架构</h4><p><code>HDFS</code> 主要由 3 个组件构成，分别是 <code>NameNode、SecondaryNameNode 和 DataNode。</code></p><p><code>HDFS</code> 是以 Master/Slave 模式运行的，其中，<code>NameNode </code>和<code> SecondaryNameNode</code> 运行在 Master 节点 上，而 <code>DataNode </code>运行在 Slave 节点上，所以 <code>HDFS </code>集群一般由一个 <code>NameNode</code>、一个<code>SecondaryNameNode</code>和许多 <code>DataNode </code>组成，其架构如下图所示。</p><img src="/2021/07/23/HBase%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/image-20210720151549111.png" class title="image-20210720151549111"><p><a href="http://c.biancheng.net/view/6502.html">HDFS简明入门教程 (biancheng.net)</a></p><h4 id="HBase逻辑结构"><a href="#HBase逻辑结构" class="headerlink" title="HBase逻辑结构"></a>HBase逻辑结构</h4><img src="/2021/07/23/HBase%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/image-20210720185905040.png" class title="image-20210720185905040"><h4 id="HBase物理结构："><a href="#HBase物理结构：" class="headerlink" title="HBase物理结构："></a>HBase物理结构：</h4><img src="/2021/07/23/HBase%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/image-20210720212833190.png" class title="image-20210720212833190"><h4 id="数据模型"><a href="#数据模型" class="headerlink" title="数据模型"></a>数据模型</h4><p><code>Name Space</code>:</p><p>命名空间，类似于关系型数据库的database概念，每个命名空间下有多个表。HBase有两个自带的命名空间，分别是hbase和default，HBase中存放的是HBase内置的表，default表是用户默认使用的命名空间</p><p><code>Region</code>:类似于关系型数据库的表的概念。不同的是，HBase定义表时只需要声明列族即可，不需要声明具体的类。这意味着，往HBase写入数据时，字段可以<strong>动态</strong>、<strong>按需</strong>指定</p><p><code>Row</code>:HBase表中的每行数据都由一个RowKey和多个Column（列组成），数据是按照RowKey的字典顺序存储的，并且查询数据时只能根据RowKey进行检索。</p><p><code>Column</code>:HBase中的每个列都由Column Family(列族)和Column  Qualifier（列限定符）进行限定，例如info：name，info:age。建表时，只需指明列族，而列限定符无需预先定义。</p><p><code>Time Stamp</code></p><p>用于标识数据的不同版本(version)，每条数据写入时，如果不指定时间戳，系统会自动为其加上该字段，其值为写入HBase的时间</p><p><code>Cell</code>：</p><p>由{rowKey，column Family：column Qualifier，time Stamp} 唯一确定的单元。cell中的数据是没有类型的，全部是字节码形式存储</p><h4 id="HBase架构："><a href="#HBase架构：" class="headerlink" title="HBase架构："></a>HBase架构：</h4><img src="/2021/07/23/HBase%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/image-20210721132312788.png" class title="image-20210721132312788"><h4 id="HBase的shell操作"><a href="#HBase的shell操作" class="headerlink" title="HBase的shell操作"></a>HBase的shell操作</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">bin/hbase shell <span class="comment">#命令行界面</span></span><br></pre></td></tr></table></figure><p>删除写错的内容</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ctrl+delete</span><br></pre></td></tr></table></figure><img src="/2021/07/23/HBase%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/bigdata/data/Hbase/Hbase的学习/image-20210721151254543.png" alt="image-20210721151254543" style="zoom:200%;"><p>使用shell报错</p><img src="/2021/07/23/HBase%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/image-20210721151938883.png" class title="image-20210721151938883"><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#先用命令查看安全模式状态</span><br><span class="line">bin/hdfs dfsadmin -safemode get</span><br><span class="line">#发现安全模式开启，关闭即可</span><br><span class="line">bin/hdfs dfsadmin -safemode leave</span><br></pre></td></tr></table></figure><p>安全模式：</p><p>当分布式文件系统（HDFS）开始启动时，会有安全模式，HDFS处在安全模式下，文件系统中不允许修改和删除的操作。</p><p>安全模式主要是为了系统启动的时候检查各个DataNode上数据块的有效性，同时根据策略必要的复制或者删除部分数据块。</p><p>创建表的语句</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cretae <span class="string">&#x27;表名&#x27;</span>,<span class="string">&#x27;列族名&#x27;</span>,<span class="string">&#x27;列族名&#x27;</span></span><br></pre></td></tr></table></figure><p>修改表信息</p><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#修改versions</span><br><span class="line">alter &#x27;表名&#x27;,&#123;NAME=&gt;&#x27;列族名&#x27;,VERSIONS=&gt;3&#125;</span><br></pre></td></tr></table></figure><p>删除表</p><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#查看表</span><br><span class="line">list</span><br><span class="line">#先将表变为不可用</span><br><span class="line">disbale &#x27;表名&#x27;</span><br><span class="line">#再删除表</span><br><span class="line">drop &#x27;表名&#x27;</span><br></pre></td></tr></table></figure><p>命名空间</p><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#查看命名空间</span><br><span class="line">list_namespace</span><br><span class="line">#创建命名空间</span><br><span class="line">create_namespace &#x27;命名空间名&#x27;</span><br><span class="line">#删除命名空间（首先得将里面的表删除）</span><br><span class="line">disable &#x27;命名空间:表名&#x27;</span><br><span class="line">drop &#x27;命名空间:表名&#x27;</span><br><span class="line">drop_namespace &#x27;命名空间&#x27;</span><br></pre></td></tr></table></figure><p>向表中插入数据</p><img src="/2021/07/23/HBase%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/image-20210721155900344.png" class title="image-20210721155900344"><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">put <span class="string">&#x27;命名空间（默认为default）:表名&#x27;</span>,<span class="string">&#x27;row_key&#x27;</span>,<span class="string">&#x27;列族:列名&#x27;</span>,<span class="string">&#x27;值&#x27;</span></span><br></pre></td></tr></table></figure><p>scan</p><img src="/2021/07/23/HBase%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/image-20210721160444790.png" class title="image-20210721160444790"><p>get</p><img src="/2021/07/23/HBase%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/image-20210721160512874.png" class title="image-20210721160512874"><p>查看10个版本以内的数据</p><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">scan &#x27;表名&#x27;,&#123;RAW=&gt;true,VERSIONS=&gt;10&#125;</span><br></pre></td></tr></table></figure><p>delete</p><img src="/2021/07/23/HBase%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/image-20210721182714486.png" class title="image-20210721182714486"><h4 id="Hbase详细架构"><a href="#Hbase详细架构" class="headerlink" title="Hbase详细架构"></a>Hbase详细架构</h4><img src="/2021/07/23/HBase%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/image-20210721220238386.png" class title="image-20210721220238386"><h4 id="Hbase写流程"><a href="#Hbase写流程" class="headerlink" title="Hbase写流程"></a>Hbase写流程</h4><img src="/2021/07/23/HBase%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/image-20210721205533542.png" class title="image-20210721205533542"><p>写流程：</p><ul><li>Client先访问zookeeper,获取hbase:meta表位于哪个Region Server</li><li>访问对应的Region Server,获取hbase:meta表，根据读请求的namespace:table/rowkey,查询楚目标数据位于哪个Region Server中的哪个Region中。并将该table的region信息以及meta表的位置信息缓存在meta cache，方便下次访问</li><li>与目标Region Server进行通信</li><li>将数据顺序写（追加）到WAL</li><li>将数据写入对应的MemStore，数据会在MemStore进行排序</li><li>向客户端发送ack</li><li>等达到MemStore的刷写时机后，将数据刷写到HFile</li></ul><h4 id="HBase读流程"><a href="#HBase读流程" class="headerlink" title="HBase读流程"></a>HBase读流程</h4><img src="/2021/07/23/HBase%E7%AE%80%E5%8D%95%E5%AD%A6%E4%B9%A0/image-20210722165440443.png" class title="image-20210722165440443"><h4 id="与Hive的集成"><a href="#与Hive的集成" class="headerlink" title="与Hive的集成"></a>与Hive的集成</h4><h4 id="HBase与Hive的对比"><a href="#HBase与Hive的对比" class="headerlink" title="HBase与Hive的对比"></a>HBase与Hive的对比</h4><p>Hive:</p><ul><li><p>数据仓库</p><p>Hive的本质其实就相当于将HDFS中已经存储的文件在MySQL中做了一个双射关系，以方便使用HQL去管理查询</p></li><li><p>用于数据分析、清洗</p><p>Hive适用于离线的数据分析和清洗，延迟较高</p></li><li><p>基于HDFS、MapReduce</p><p>Hive存储的数据依旧在DataNode上，编写的HQL语句终将是转换为MapReduce代码执行</p></li></ul><p><strong>HBase:</strong></p><ul><li><p>数据库</p><p>是一种面向列族存储的非关系型数据库</p></li><li><p>用于存储结构化和非结构化的数据</p><p>适用于单表非关系型数据的存储，不适合做关联查询，类似Join等操作</p></li><li><p>基于HDFS</p><p>数据持久化存储的体现形式是HFile，存放于DataNode中，被ResionServer以region的形式进行管理</p></li><li><p>延迟较低，接入在线业务使用</p><p>面对大量的企业数据，HBase可以直线单表大量数据的存储，同时提高了高效的数据访问速度</p></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 博客 </category>
+          
+          <category> 大数据 </category>
+          
+          <category> HBase </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 大数据,列式存储 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>下一个排列</title>
+      <link href="/2021/07/22/%E4%B8%8B%E4%B8%80%E4%B8%AA%E6%8E%92%E5%88%97/"/>
+      <url>/2021/07/22/%E4%B8%8B%E4%B8%80%E4%B8%AA%E6%8E%92%E5%88%97/</url>
+      
+        <content type="html"><![CDATA[<h4 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h4><p>实现获取 下一个排列 的函数，算法需要将给定数字序列重新排列成字典序中下一个更大的排列。</p><p>如果不存在下一个更大的排列，则将数字重新排列成最小的排列（即升序排列）。</p><p>必须 原地 修改，只允许使用额外常数空间</p><p>**字典序:**字典序的下一个排列总是要比当前排列要大，除非该排列已经是最大的排列。要找到一个大于当前序列的新序列，且变大的幅度尽可能的小</p><p><strong>示例1：</strong></p><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">输入：nums = [1,2,3]</span><br><span class="line">输出：[1,3,2]</span><br></pre></td></tr></table></figure><p><strong>示例2：</strong></p><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">输入：nums = [3,2,1]</span><br><span class="line">输出：[1,2,3]</span><br></pre></td></tr></table></figure><p><strong>示例3：</strong></p><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">输入：nums = [1,1,5]</span><br><span class="line">输出：[1,5,1]</span><br></pre></td></tr></table></figure><p><strong>示例4：</strong></p><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">输入：nums = [1]</span><br><span class="line">输出：[1]</span><br></pre></td></tr></table></figure><p><strong>提示：</strong></p><ul><li><code>1 &lt;= nums.length &lt;= 100</code></li><li><code>0 &lt;= nums[i] &lt;= 100</code></li></ul><p>学习体会：开始把这个题读完了之后，整个人都是懵的，在反复独了几遍题目，发现还是读不懂后，选择看题解。。。</p><p>题解思路：</p><p>找到从右往左查找第一个不是递减的数，然后再从右到第一个不为递减的元素中找一个大于不为递减元素的值，并将这两个值交换，再从第一个不为递减的元素的位置到最后位置的元素反转一下，最终得到下一个排列</p><p>代码：</p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//思想：字典序的下一个排列总是要比当前排列要大，除非该排列已经是最大的排列。要找到一个大于当前序列的新序列，且变大的幅度尽可能的小</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NextPermutationDemo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        NextPermutationDemo test=<span class="keyword">new</span> NextPermutationDemo();</span><br><span class="line">        <span class="keyword">int</span>[] arr=<span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">3</span>,<span class="number">2</span>,<span class="number">1</span>&#125;;</span><br><span class="line">        test.nextPermutation(arr);</span><br><span class="line">        System.out.println(Arrays.toString(arr));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">nextPermutation</span><span class="params">(<span class="keyword">int</span>[] nums)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(nums.length&lt;=<span class="number">1</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> i=nums.length-<span class="number">2</span>,j=nums.length-<span class="number">1</span>;</span><br><span class="line">        <span class="comment">//从后往前查找第一个不是降序排列的数</span></span><br><span class="line">        <span class="keyword">while</span>(i&gt;=<span class="number">0</span>&amp;&amp;nums[i]&gt;nums[i+<span class="number">1</span>])&#123;</span><br><span class="line">            i--;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//从后往前查找比上面查找的值大的元素，交换</span></span><br><span class="line">        <span class="keyword">while</span>(j&gt;i&amp;&amp;i&gt;=<span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">if</span>(nums[j]&gt;nums[i])&#123;</span><br><span class="line">                swap(nums,i,j);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            j--;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        reverseArr(nums,i+<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span>[] arr,<span class="keyword">int</span> i,<span class="keyword">int</span> j)</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> temp=arr[i];</span><br><span class="line">        arr[i]=arr[j];</span><br><span class="line">        arr[j]=temp;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">reverseArr</span><span class="params">(<span class="keyword">int</span>[] arr,<span class="keyword">int</span> start)</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> left=start,right=arr.length-<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span>(left&lt;right)&#123;</span><br><span class="line">            swap(arr,left,right);</span><br><span class="line">            left++;</span><br><span class="line">            right--;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 博客 </category>
+          
+          <category> 算法 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 算法,leetcode,中等 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>JUC基础学习</title>
+      <link href="/2021/07/20/JUC%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/"/>
+      <url>/2021/07/20/JUC%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/</url>
+      
+        <content type="html"><![CDATA[<h3 id="JUC简介"><a href="#JUC简介" class="headerlink" title="JUC简介"></a>JUC简介</h3><p>在Java中，线程部分是一个重点，本篇文章说的JUC也是关于线程的。JUC就是java.util.concurrent工具包的简称。这是一个处理线程的工具包，JDK1.5开始出现。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 博客 </category>
+          
+          <category> 后端 </category>
+          
+          <category> Java线程 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Java,多线程 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>盛最多水的容器</title>
+      <link href="/2021/07/15/%E7%9B%9B%E6%9C%80%E5%A4%9A%E6%B0%B4%E7%9A%84%E5%AE%B9%E5%99%A8/"/>
+      <url>/2021/07/15/%E7%9B%9B%E6%9C%80%E5%A4%9A%E6%B0%B4%E7%9A%84%E5%AE%B9%E5%99%A8/</url>
+      
+        <content type="html"><![CDATA[<p><strong>题目描述：</strong></p><p>给你 n 个非负整数 a1，a2，…，an，每个数代表坐标中的一个点 (i, ai) 。在坐标内画 n 条垂直线，垂直线 i 的两个端点分别为 (i, ai) 和 (i, 0) 。找出其中的两条线，使得它们与 x 轴共同构成的容器可以容纳最多的水。</p><p>说明：你不能倾斜容器。</p><p><strong>示例1：</strong></p><img src="/2021/07/15/%E7%9B%9B%E6%9C%80%E5%A4%9A%E6%B0%B4%E7%9A%84%E5%AE%B9%E5%99%A8/image-20210715115032300.png" class title="image-20210715115032300"><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">输入：[1,8,6,2,5,4,8,3,7]</span><br><span class="line">输出：49 </span><br><span class="line">解释：图中垂直线代表输入数组 [1,8,6,2,5,4,8,3,7]。在此情况下，容器能够容纳水（表示为蓝色部分）的最大值为 49。</span><br></pre></td></tr></table></figure><p><strong>示例2：</strong></p><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">输入：height = [1,1]</span><br><span class="line">输出：1</span><br></pre></td></tr></table></figure><p><strong>示例3：</strong></p><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">输入：height = [4,3,2,1,4]</span><br><span class="line">输出：16</span><br></pre></td></tr></table></figure><p><strong>示例4：</strong></p><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">输入：height = [1,2,1]</span><br><span class="line">输出：2</span><br></pre></td></tr></table></figure><p><strong>提示：</strong></p><ul><li><code>n = height.length</code></li><li><code>2 &lt;= n &lt;= 3 * 104</code></li><li><code>0 &lt;= height[i] &lt;= 3 * 104</code></li></ul><p><strong>题目解读：</strong></p><p>题目所给的数组，相当于每个元素就是一个坐标（i,ai）,这个坐标代表了所画的柱状图的最高点。而我们需要求的就是两个柱状图之间的最大面积（此面积的高为两个柱状图之间较小的那个高）。求长方形的面积就少不了长和宽，而最大面积的话就需要长和宽都尽量的大。这也是本题的难点，如何求得较大的长和宽。</p><p>这里选择使用双指针来进行枚举，一个指针指向开头，一个指针指向结尾。然后接下来需要考虑的问题就是如何移动指针来获得最大值，我们发现，无论怎么移动指针，所围成的面积的长度都会减少，在这种情况下，我们选择较小高的那个指针移动就能取得最大值。</p><p><strong>代码：</strong></p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">maxArea1</span><span class="params">(<span class="keyword">int</span>[] height)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> len=height.length;</span><br><span class="line">        <span class="keyword">int</span> i=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> j=len-<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> max=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span>(i&lt;j)&#123;</span><br><span class="line">            <span class="keyword">int</span> min=height[i]&lt;height[j]? height[i++]:height[j--];</span><br><span class="line">            max=max&gt;min*(j-i+<span class="number">1</span>)? max:min*(j-i+<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> max;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 博客 </category>
+          
+          <category> 算法 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 算法,leetcode,中等 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Java安装</title>
+      <link href="/2021/07/13/Java%E5%AE%89%E8%A3%85/"/>
+      <url>/2021/07/13/Java%E5%AE%89%E8%A3%85/</url>
+      
+        <content type="html"><![CDATA[<h4 id="下载JDK"><a href="#下载JDK" class="headerlink" title="下载JDK"></a>下载JDK</h4><p>下载地址：</p><p>oracle官网：<a href>https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html</a></p><p>进入页面后下载64位的包，jdk-8u291-linux-x64.tar.gz与jdk-8u291-linux-x64.rpm都可以</p><p>这里我下载的是<strong>jdk-8u291-linux-x64.tar.gz</strong></p><p>在linux下<code>/usr/local</code>目录下，使用命令</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir jdk<span class="comment">#文件名可以随便取</span></span><br></pre></td></tr></table></figure><p>将下载好的jdk-8u291-linux-x64.tar.gz通过xshell传输到linux下的<code>/usr/local/jdk</code>中</p><img src="/2021/07/13/Java%E5%AE%89%E8%A3%85/image-20210713230043661.png" class title="image-20210713230043661"><p>传输到文件目录下</p><img src="/2021/07/13/Java%E5%AE%89%E8%A3%85/image-20210713225957847.png" class title="image-20210713225957847"><p>使用命令进行解压到当前目录下</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tar -xzvf jdk-8u291-linux-x64.tar.gz</span><br></pre></td></tr></table></figure><img src="/2021/07/13/Java%E5%AE%89%E8%A3%85/image-20210713230055548.png" class title="image-20210713230055548"><h4 id="编写配置文件，配置环境变量"><a href="#编写配置文件，配置环境变量" class="headerlink" title="编写配置文件，配置环境变量"></a>编写配置文件，配置环境变量</h4><p>使用命令</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim /etc/profile</span><br></pre></td></tr></table></figure><p>按”i”进入编辑模式，添加上下面的内容：</p><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">export JAVA_HOME=/usr/local/jdk/jdk1.8.0_291</span><br><span class="line">export PATH=$JAVA_HOME/bin:$PATH</span><br><span class="line">export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar</span><br><span class="line">export JRE_HOME=$JAVA_HOME/jre</span><br></pre></td></tr></table></figure><img src="/2021/07/13/Java%E5%AE%89%E8%A3%85/image-20210713230119200.png" class title="image-20210713230119200"><p>添加后，按“ESC”退出编辑模式，并<code>:wq</code>进行保存修改内容。（若没有使用修改内容不会保存）</p><p>最后还要使用命令,使配置的环境变量生效</p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">source</span> /etc/profile</span><br></pre></td></tr></table></figure><p>安装完毕后，使用命令<code>java -version</code>查看是否安装成功</p><img src="/2021/07/13/Java%E5%AE%89%E8%A3%85/image-20210713230142680.png" class title="image-20210713230142680"><p>出现上面图片中的内容，说明安装成功</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 博客 </category>
+          
+          <category> Linux </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Linux,Java安装 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>nacos配置中心</title>
+      <link href="/2021/07/13/nacos%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83/"/>
+      <url>/2021/07/13/nacos%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83/</url>
+      
+        <content type="html"><![CDATA[<h2 id="一、配置文件介绍"><a href="#一、配置文件介绍" class="headerlink" title="一、配置文件介绍"></a>一、配置文件介绍</h2><h4 id="Spring-Cloud-Config"><a href="#Spring-Cloud-Config" class="headerlink" title="Spring Cloud Config"></a>Spring Cloud Config</h4><p>Spring Cloud Config为分布式系统的外部配置提供了服务端和客户端的支持方案。在配置的服务段你可以在所有环境中为应用程序管理外部属性的中心位置。客户端和服务端概念上的Spring Environment 和 PropertySource 抽象保持同步, 它们非常适合Spring应用程序，但是可以与任何语言中运行的应用程序一起使用。当应用程序在部署管道中从一个开发到测试直至进入生产时，您可以管理这些环境之间的配置，并确保应用程序在迁移时具有它们需要运行的所有内容。服务器存储后端的默认实现使用git，因此它很容易支持标记版本的配置环境，并且能够被管理内容的各种工具访问。很容易添加替代的实现，并用Spring配置将它们插入。</p><p>Spring Cloud Config 包含了Client和Server两个部分，server提供配置文件的存储、以接口的形式将配置文件的内容提供出去，client通过接口获取数据、并依据此数据初始化自己的应用。Spring cloud使用git或svn存放配置文件，默认情况下使用git。</p><h4 id="Nacos替换Config"><a href="#Nacos替换Config" class="headerlink" title="Nacos替换Config"></a>Nacos替换Config</h4><p>Nacos 可以与 Spring, Spring Boot, Spring Cloud 集成，并能代替 Spring Cloud Eureka, Spring Cloud Config。通过 Nacos Server 和 spring-cloud-starter-alibaba-nacos-config 实现配置的动态变更。</p><p><strong>应用场景</strong></p><p>在系统开发过程中，开发者通常会将一些需要变更的参数、变量等从代码中分离出来独立管理，以独立的配置文件的形式存在。目的是让静态的系统工件或者交付物（如 WAR，JAR 包等）更好地和实际的物理运行环境进行适配。配置管理一般包含在系统部署的过程中，由系统管理员或者运维人员完成。配置变更是调整系统运行时的行为的有效手段。</p><p>如果微服务架构中没有使用统一配置中心时，所存在的问题：</p><p>- 配置文件分散在各个项目里，不方便维护</p><p>- 配置内容安全与权限</p><p>- 更新配置后，项目需要重启</p><p>nacos配置中心：系统配置的集中管理（编辑、存储、分发）、动态更新不重启、回滚配置（变更管理、历史版本管理、变更审计）等所有与配置相关的活动。</p><h4 id="读取Nacos配置中心的配置文件"><a href="#读取Nacos配置中心的配置文件" class="headerlink" title="读取Nacos配置中心的配置文件"></a>读取Nacos配置中心的配置文件</h4><ul><li><p>在Nacos创建同一配置文件</p><img src="/2021/07/13/nacos%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83/image-20210713173521686.png" class title="image-20210713173521686"></li><li><p>输入配置信息及配置内容</p><img src="/2021/07/13/nacos%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83/image-20210713173649714.png" class title="image-20210713173649714"></li><li><p>Data ID的完整规则格式</p><p><strong>${prefix}-${spring.profile.active}.${file-extension}</strong></p><p><strong>- prefix</strong> 默认为所属工程配置spring.application.name 的值（即：nacos-provider），也可以通过配置项 spring.cloud.nacos.config.prefix来配置。</p><p><strong>- spring.profiles.active=dev</strong> 即为当前环境对应的 profile。 注意：当 spring.profiles.active 为空时，对应的连接符 - 也将不存在，dataId 的拼接格式变成 ${prefix}.${file-extension}</p><p><strong>- file-exetension</strong> 为配置内容的数据格式，可以通过配置项 spring.cloud.nacos.config.file-extension 来配置。目前只支持 properties 和 yaml 类型。</p><p><strong>注</strong>：使用Nacos的配置中心需要引入依赖</p><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-alibaba-nacos-config<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></li></ul><h4 id="对单个配置文件的读取"><a href="#对单个配置文件的读取" class="headerlink" title="对单个配置文件的读取"></a>对单个配置文件的读取</h4><p><strong>创建项目的bootstrap.properties/yml文件，用于定义一些一般不会变动的参数</strong></p><p>bootstrap.properties</p><figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="comment">#配置中心地址</span></span><br><span class="line"><span class="meta">spring.cloud.nacos.config.server-addr</span>=<span class="string">127.0.0.1:8848</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">#若存在profile，则dataId的要加上该profile,proflie:dev(生产) 、test(测试)、prod(生产)</span></span><br><span class="line"><span class="comment">#spring.profiles.active=dev</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"># 该配置影响统一配置中心中的dataId</span></span><br><span class="line"><span class="meta">spring.application.name</span>=<span class="string">service-statistics</span></span><br></pre></td></tr></table></figure><p>bootstrap.yml</p><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">nacos:</span></span><br><span class="line">      <span class="attr">config:</span></span><br><span class="line">        <span class="attr">file-extension:</span> <span class="string">yaml</span></span><br><span class="line">        <span class="comment">#nacos服务地址</span></span><br><span class="line">        <span class="attr">server-addr:</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span><span class="string">:8848</span></span><br><span class="line">      <span class="attr">discovery:</span></span><br><span class="line">        <span class="attr">server-addr:</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span><span class="string">:8848</span></span><br><span class="line">  <span class="attr">application:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">service-sta</span></span><br></pre></td></tr></table></figure><p><strong>补充：springboot配置文件加载顺序</strong></p><p>其实yml和properties文件是一样的原理，且一个项目上要么yml或者properties，二选一的存在。推荐使用yml，更简洁。</p><p>bootstrap与application<br><strong>（1）加载顺序</strong><br>这里主要是说明application和bootstrap的加载顺序。</p><p>bootstrap.yml（bootstrap.properties）先加载<br>application.yml（application.properties）后加载<br>bootstrap.yml 用于应用程序上下文的引导阶段。</p><p>bootstrap.yml 由父Spring ApplicationContext加载。</p><p>父ApplicationContext 被加载到使用 application.yml 的之前。</p><p><strong>（2）配置区别</strong><br>bootstrap.yml 和application.yml 都可以用来配置参数。</p><p>bootstrap.yml 可以理解成系统级别的一些参数配置，这些参数一般是不会变动的。<br>application.yml 可以用来定义应用级别的。</p><h4 id="名称空间切换环境"><a href="#名称空间切换环境" class="headerlink" title="名称空间切换环境"></a>名称空间切换环境</h4><p>在实际开发中，通常有多套不同的环境（默认只有public），那么这个时候可以根据指定的环境来创建不同的 namespce，例如，开发、测试和生产三个不同的环境，那么使用一套 nacos 集群可以分别建以下三个不同的 namespace。以此来实现多环境的隔离。</p><p><strong>创建命名空间</strong>：</p><img src="/2021/07/13/nacos%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83/image-20210713175003006.png" class title="image-20210713175003006"><p>在不同命名空间中，可以直接创建配置文件，也可以从其它命名空间中克隆配置（推荐）。</p><h4 id="多配置文件加载"><a href="#多配置文件加载" class="headerlink" title="多配置文件加载"></a>多配置文件加载</h4><p>在一些情况下需要加载多个配置文件。假如现在dev名称空间下有三个配置文件：service-statistics.properties、redis.properties、jdbc.properties</p><img src="/2021/07/13/nacos%E9%85%8D%E7%BD%AE%E4%B8%AD%E5%BF%83/image-20210713175320743.png" class title="image-20210713175320743"><p><strong>添加配置，加载多个配置文件</strong></p><p>properties格式：</p><figure class="highlight properties"><table><tr><td class="code"><pre><span class="line"><span class="meta">spring.cloud.nacos.config.server-addr</span>=<span class="string">127.0.0.1:8848</span></span><br><span class="line"></span><br><span class="line"><span class="meta">spring.profiles.active</span>=<span class="string">dev</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"># 该配置影响统一配置中心中的dataId，之前已经配置过</span></span><br><span class="line"><span class="meta">spring.application.name</span>=<span class="string">service-statistics</span></span><br><span class="line"></span><br><span class="line"><span class="meta">spring.cloud.nacos.config.namespace</span>=<span class="string">13b5c197-de5b-47e7-9903-ec0538c9db01</span></span><br><span class="line"></span><br><span class="line"><span class="meta">spring.cloud.nacos.config.ext-config[0].data-id</span>=<span class="string">redis.properties</span></span><br><span class="line"><span class="comment"># 开启动态刷新配置，否则配置文件修改，工程无法感知</span></span><br><span class="line"><span class="meta">spring.cloud.nacos.config.ext-config[0].refresh</span>=<span class="string">true</span></span><br><span class="line"><span class="meta">spring.cloud.nacos.config.ext-config[1].data-id</span>=<span class="string">jdbc.properties</span></span><br><span class="line"><span class="meta">spring.cloud.nacos.config.ext-config[1].refresh</span>=<span class="string">true</span></span><br></pre></td></tr></table></figure><p>yml格式：</p><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">cloud:</span></span><br><span class="line">    <span class="attr">nacos:</span></span><br><span class="line">      <span class="attr">config:</span></span><br><span class="line">        <span class="attr">file-extension:</span> <span class="string">yml</span></span><br><span class="line">        <span class="attr">server-addr:</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span><span class="string">:8848</span></span><br><span class="line">        <span class="comment">#使用命名空间时需要填写</span></span><br><span class="line">        <span class="attr">namespace:</span> <span class="string">13b5c197-de5b-47e7-9903-ec0538c9db01</span></span><br><span class="line">        <span class="comment">#读取多个配置文件</span></span><br><span class="line">        <span class="attr">ext-config:</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">dataId:</span> <span class="string">redis.properties</span></span><br><span class="line">            <span class="attr">group:</span> <span class="string">DEFAULT_GROUP</span></span><br><span class="line">            <span class="attr">refresh:</span> <span class="literal">true</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">dataId:</span> <span class="string">jdbc.properties</span></span><br><span class="line">            <span class="attr">group:</span> <span class="string">DEFAULT_GROUP</span></span><br><span class="line">            <span class="comment">#动态刷新配置，否则配置文件修改，无法感知</span></span><br><span class="line">            <span class="attr">refresh:</span> <span class="literal">true</span></span><br><span class="line">      <span class="attr">discovery:</span></span><br><span class="line">        <span class="attr">server-addr:</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span><span class="string">:8848</span></span><br><span class="line">  <span class="attr">application:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">service-sta</span></span><br></pre></td></tr></table></figure><p>补充yml的一些书写规则</p><p>数组：</p><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment">#数组</span></span><br><span class="line"><span class="attr">person:</span> </span><br><span class="line">  <span class="attr">name:</span> [<span class="string">zhangsan</span>,<span class="string">lisi</span>,<span class="string">wangwu</span>]</span><br><span class="line">  </span><br><span class="line"><span class="comment">#或</span></span><br><span class="line"><span class="attr">person:</span></span><br><span class="line">  <span class="attr">name:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">zhangsan</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">lisi</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">王五</span></span><br></pre></td></tr></table></figure><p>对象/Map</p><figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment">#对象</span></span><br><span class="line"><span class="attr">person:</span> &#123; <span class="attr">name:</span> <span class="string">zhansan</span>,<span class="attr">age:</span> <span class="number">18</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">#或</span></span><br><span class="line"><span class="attr">person:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">zhangsan</span></span><br><span class="line">  <span class="attr">age:</span> <span class="number">18</span></span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 博客 </category>
+          
+          <category> 后端学习 </category>
+          
+          <category> 微服务 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 后端 </tag>
+            
+            <tag> 微服务 </tag>
+            
+            <tag> 配置中心 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>三数之和</title>
+      <link href="/2021/07/12/%E4%B8%89%E6%95%B0%E4%B9%8B%E5%92%8C/"/>
+      <url>/2021/07/12/%E4%B8%89%E6%95%B0%E4%B9%8B%E5%92%8C/</url>
+      
+        <content type="html"><![CDATA[<p><strong>题目</strong>：给你一个包含 n 个整数的数组 nums，判断 nums 中是否存在三个元素 a，b，c ，使得 a + b + c = 0 ？请你找出所有和为 0 且不重复的三元组。</p><p><strong>注意</strong>：答案中不可以包含重复的三元组。</p><p><strong>示例1：</strong></p><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">输入：nums = [-1,0,1,2,-1,-4]</span><br><span class="line">输出：[[-1,-1,2],[-1,0,1]]</span><br></pre></td></tr></table></figure><p><strong>示例2:</strong></p><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">输入：nums = []</span><br><span class="line">输出：[]</span><br></pre></td></tr></table></figure><p><strong>示例3：</strong></p><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">输入：nums = [0]</span><br><span class="line">输出：[]</span><br></pre></td></tr></table></figure><p><strong>提示：</strong></p><ul><li><code>0 &lt;= nums.length &lt;= 3000</code></li><li><code>-10^5 &lt;= nums[i] &lt;= 10^5</code></li></ul><h4 id="思路："><a href="#思路：" class="headerlink" title="思路："></a>思路：</h4><p>根据题目的描述，脑子中闪过的第一个念头就是三重循环枚举每一种类型，但O($n^3$)的时间复杂度，肯定是过不了的。实在想不出来。。就去看了题解，思想依旧是枚举的思想但题解通过双指针的方式降低了时间复杂度，时间复杂度为O($n^2$)。</p><p><strong>题解的双向指针的思想：</strong></p><p>首先把数组进行一次排序，方便后面进行枚举。排序过后，接下来就进行枚举，先进行第一层枚举，从数组的第一个元素进行枚举，将第一层遍历的下标定义为a；第二层枚举（定义下标为b）需要从比a大的元素开始且相连的两个元素不能相同（a也如此），其目的是避免重复的集合。例如[1,2,3,3,3,9]，若两个相邻的元素相同，a=0，b=2时，得到的集合为<code>[1,3]</code>,但当b=3时，得到的集合也为<code>[1,3]</code>这样就会导致所得的集合重复。解决重复的问题后，定义一个target：指第三层的枚举，也是双指针的其中之一。若a不变，b向右边移动，那么随着b的增大，第三层枚举的值是需要减小的，因此双指针正好能满足枚举要求。一个从小到大，一个从大到小，当双指针相等时结束时，跳出循环。</p><p><strong>代码：</strong></p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;List&lt;Integer&gt;&gt; threeSum(<span class="keyword">int</span>[] nums) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> n=nums.length;</span><br><span class="line">        <span class="keyword">if</span>(n&lt;=<span class="number">2</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//预排序</span></span><br><span class="line">        Arrays.sort(nums);</span><br><span class="line"></span><br><span class="line">        List&lt;List&lt;Integer&gt;&gt; list=<span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        <span class="comment">//枚举</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span>(i&gt;<span class="number">0</span>&amp;&amp;nums[i-<span class="number">1</span>]==nums[i])&#123;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//定义一个指向最右端的指针</span></span><br><span class="line">            <span class="keyword">int</span> right=n-<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">int</span> target=-nums[i];</span><br><span class="line"></span><br><span class="line">            <span class="comment">//枚举j</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = i+<span class="number">1</span>; j &lt; n; j++) &#123;</span><br><span class="line">                <span class="keyword">if</span>(j&gt;i+<span class="number">1</span>&amp;&amp;nums[j]==nums[j-<span class="number">1</span>])&#123;</span><br><span class="line">                    <span class="keyword">continue</span>;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="comment">//找到a+b+c&lt;=0的情况</span></span><br><span class="line">                <span class="keyword">while</span>(j&lt;right&amp;&amp;nums[j]+nums[right]&gt;target)&#123;</span><br><span class="line">                    right--;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="comment">//若j==right那么后面不可能再有a+b+c&lt;=0且b&lt;c的情况</span></span><br><span class="line">                <span class="keyword">if</span>(j==right)&#123;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span>(nums[j]+nums[right]==target)&#123;</span><br><span class="line">                    List&lt;Integer&gt; list1=<span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">                    list1.add(nums[i]);</span><br><span class="line">                    list1.add(nums[j]);</span><br><span class="line">                    list1.add(nums[right]);</span><br><span class="line"></span><br><span class="line">                    list.add(list1);</span><br><span class="line">                &#125;</span><br><span class="line">                </span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> list;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure><p><strong>时间复杂度分析：</strong></p><p>枚举的过程每一步中，「左指针」会向右移动一个位置（也就是题目中的 b），而「右指针」会向左移动若干个位置，这个与数组的元素有关，但我们知道它一共会移动的位置数为 N次，所以第二层枚举和第三层枚举的时间复杂度为O(n),枚举的复杂度为O($n^2$),预排序时间复杂度为O(nlogn)所以总的时间复杂度为O($n^2$)</p><p><strong>空间复杂度：</strong></p><p>只定义了一个List，空间复杂度O(n)</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 博客 </category>
+          
+          <category> 算法 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 算法,leetcode,中等 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Hello World</title>
+      <link href="/2021/07/10/hello-world/"/>
+      <url>/2021/07/10/hello-world/</url>
+      
+        <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">listen       9001;</span><br><span class="line">server_name  localhost;</span><br><span class="line"></span><br><span class="line">location ~ /eduService/ &#123;</span><br><span class="line">proxy_pass http://localhost:8001;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">location ~ /eduoss/ &#123;</span><br><span class="line">proxy_pass http://localhost:8002;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">location ~ /eduvod/ &#123;</span><br><span class="line">proxy_pass http://localhost:8003;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">location ~ /educms/ &#123;</span><br><span class="line">proxy_pass http://localhost:8004;</span><br><span class="line">&#125;</span><br><span class="line">location ~ /edumsm/ &#123;</span><br><span class="line">proxy_pass http://localhost:8005;</span><br><span class="line">&#125;</span><br><span class="line">location ~ /educenter/ &#123;</span><br><span class="line">proxy_pass http://localhost:8160;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">location ~ /api/ &#123;</span><br><span class="line">proxy_pass http://localhost:8160;</span><br><span class="line">&#125;</span><br><span class="line">location ~ /eduorder/ &#123;</span><br><span class="line">proxy_pass http://localhost:8006;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">location ~ /staservice/ &#123;</span><br><span class="line">proxy_pass http://localhost:8007;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">location ~ /admin/acl/ &#123;</span><br><span class="line">proxy_pass http://localhost:8010;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+  
+  
+</search>
