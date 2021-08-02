@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>二叉搜索数数量</title>
+      <link href="/2021/08/03/%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%95%B0%E6%95%B0%E9%87%8F/"/>
+      <url>/2021/08/03/%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%95%B0%E6%95%B0%E9%87%8F/</url>
+      
+        <content type="html"><![CDATA[<h4 id="题目描述："><a href="#题目描述：" class="headerlink" title="题目描述："></a>题目描述：</h4><p>给你一个整数 <code>n</code> ，求恰由 <code>n</code> 个节点组成且节点值从 <code>1</code> 到 <code>n</code> 互不相同的 <strong>二叉搜索树</strong> 有多少种？返回满足题意的二叉搜索树的种数</p><p><strong>示例1：</strong></p><img src="/2021/08/03/%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%95%B0%E6%95%B0%E9%87%8F/uniquebstn3.jpg" class title="img"><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">输入：n = <span class="number">3</span></span><br><span class="line">输出：<span class="number">5</span></span><br></pre></td></tr></table></figure><p><strong>示例2：</strong></p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">输入：n = <span class="number">1</span></span><br><span class="line">输出：<span class="number">1</span></span><br></pre></td></tr></table></figure><p><strong>提示：</strong></p><ul><li><code>1 &lt;= n &lt;= 19</code></li></ul><h4 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h4><p>思路一：</p><p>看到这道题目的第一个念头是用数学公式直接进行计算（后面确实也是通过公式计算通过），因为在数据结构这门课上，曾讲过这个计算二叉树种类的公式，所以自然而然的想到了用公式解决问题。（但感觉自己还是缺乏思考，没能想到用动态规划😀）</p><p><strong>卡塔兰数公式：</strong><br>$$<br>C0=1,Cn+1=2(2n+1)Cn/n+2<br>$$<br>使用这个方法时需要注意类型要使用long，<strong>不然会溢出，从而导致错误答案</strong></p><p>代码：</p><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">public int <span class="function"><span class="title">numTrees</span>(<span class="params">int n</span>)</span> &#123;</span><br><span class="line">    long num2=<span class="number">1</span>;</span><br><span class="line">    int temp=<span class="number">2</span>*n;</span><br><span class="line">    int temp1=<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (int i = <span class="number">0</span>,j=<span class="number">1</span>; i &lt;n &amp;&amp;j&lt;=n; i++,j++) &#123;</span><br><span class="line">        num2*=temp;</span><br><span class="line">        <span class="keyword">if</span>(num2%j==<span class="number">0</span>)&#123;</span><br><span class="line">            num2=num2/j;</span><br><span class="line">            temp1=<span class="number">1</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            temp1*=j;</span><br><span class="line">        &#125;</span><br><span class="line">        temp--;</span><br><span class="line">    &#125;</span><br><span class="line">    long sum=num2/(temp1*(n+<span class="number">1</span>));</span><br><span class="line"></span><br><span class="line">    <span class="comment">//        long C = 1;</span></span><br><span class="line">    <span class="comment">//        for (int i = 0; i &lt; n; ++i) &#123;</span></span><br><span class="line">    <span class="comment">//            C = C * 2 * (2 * i + 1) / (i + 2);</span></span><br><span class="line">    <span class="comment">//        &#125;</span></span><br><span class="line">    <span class="comment">//        return (int) C;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> (int)sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p><strong>思路二：</strong></p><p>动态规划解决：将一颗二叉搜索树，分为三部分，根节点，左子树和右子树，而每个不同的根节点，所能构成的二叉搜索树种数为左子树构成二叉搜索数的种类 * 右子树构成二叉搜索树的种类</p><p><strong>状态转移方程：</strong><br>$$<br>dp[i]=sum(dp[i-j]*dp[j-1])<br>i=1 … n<br>$$<br>i为当前的节点个数</p><p><strong>代码：</strong></p><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">numTrees1</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//n==0时，dp[n]=1;n==1时,dp[n]=1</span></span><br><span class="line">        <span class="keyword">int</span>[] dp=<span class="keyword">new</span> <span class="keyword">int</span>[n+<span class="number">1</span>];</span><br><span class="line">        dp[<span class="number">0</span>]=<span class="number">1</span>;</span><br><span class="line">        dp[<span class="number">1</span>]=<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i &lt;=n ; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;=i; j++) &#123;</span><br><span class="line">                dp[i]+=dp[i-j]*dp[j-<span class="number">1</span>];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> dp[n];</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 博客 </category>
+          
+          <category> 算法 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 动态规划,二叉搜索树 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>数据库连接模板</title>
       <link href="/2021/07/31/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E6%A8%A1%E6%9D%BF/"/>
       <url>/2021/07/31/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E6%A8%A1%E6%9D%BF/</url>
