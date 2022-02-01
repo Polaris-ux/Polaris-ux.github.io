@@ -1,0 +1,351 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="description" content="MySQL复习"><meta name="keywords" content=""><meta name="author" content="Laity&amp;"><meta name="copyright" content="Laity&amp;"><title>MySQL复习 | Laity的日常博客</title><link rel="shortcut icon" href="/melody-favicon.ico"><link rel="stylesheet" href="/css/index.css?version=1.9.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css?version=1.9.0"><meta name="format-detection" content="telephone=no"><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><script src="https://v1.hitokoto.cn/?encode=js&amp;charset=utf-8&amp;select=.footer_custom_text" defer></script><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"We didn't find any results for the search: ${query}"}},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  hexoVersion: '5.4.0'
+} </script><meta name="generator" content="Hexo 5.4.0"></head><body><canvas class="fireworks"></canvas><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div id="sidebar" data-display="true"><div class="toggle-sidebar-info text-center"><span data-toggle="Toggle article">Toggle site</span><hr></div><div class="sidebar-toc"><div class="sidebar-toc__title">Catalog</div><div class="sidebar-toc__progress"><span class="progress-notice">You've read</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar"></div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#MySQL%E7%9A%84%E5%9F%BA%E7%A1%80%E6%9E%B6%E6%9E%84"><span class="toc-number">1.</span> <span class="toc-text">MySQL的基础架构</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E4%B8%A4%E4%B8%AA%E6%97%A5%E5%BF%97%E6%A8%A1%E5%9D%97%EF%BC%9F-%E5%9F%BA%E4%BA%8EInnoDB"><span class="toc-number">1.1.</span> <span class="toc-text">为什么需要两个日志模块？(基于InnoDB)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#redo-log%E8%A6%81%E5%BC%95%E5%85%A5prepare%E9%A2%84%E6%8F%90%E4%BA%A4%E7%8A%B6%E6%80%81%E5%8E%9F%E5%9B%A0"><span class="toc-number">1.2.</span> <span class="toc-text">redo log要引入prepare预提交状态原因</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Mysql%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">2.</span> <span class="toc-text">Mysql基本数据类型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B4%E5%9E%8B"><span class="toc-number">2.1.</span> <span class="toc-text">整型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%AE%E7%82%B9%E5%9E%8B"><span class="toc-number">2.2.</span> <span class="toc-text">浮点型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9A%E7%82%B9%E5%9E%8B"><span class="toc-number">2.3.</span> <span class="toc-text">定点型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5%E6%9C%9F%E7%B1%BB%E5%9E%8B"><span class="toc-number">2.4.</span> <span class="toc-text">日期类型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#char%E7%B1%BB%E5%9E%8B%E5%92%8Cvarchar%E7%B1%BB%E5%9E%8B"><span class="toc-number">2.5.</span> <span class="toc-text">char类型和varchar类型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#text%E5%92%8Cblob"><span class="toc-number">2.6.</span> <span class="toc-text">text和blob</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Mysql%E8%AF%AD%E6%B3%95"><span class="toc-number">3.</span> <span class="toc-text">Mysql语法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#mysql%E5%9F%BA%E6%9C%ACsql%E8%AF%AD%E5%8F%A5"><span class="toc-number">3.1.</span> <span class="toc-text">mysql基本sql语句</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MySQL%E5%8F%98%E9%87%8F"><span class="toc-number">3.2.</span> <span class="toc-text">MySQL变量</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E5%8F%98%E9%87%8F"><span class="toc-number">3.2.1.</span> <span class="toc-text">系统变量</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%8A%B6%E6%80%81%E5%8F%98%E9%87%8F"><span class="toc-number">3.2.2.</span> <span class="toc-text">状态变量</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%9E%82%E7%9B%B4%E5%88%87%E5%88%86%E4%B8%8E%E6%B0%B4%E5%B9%B3%E5%88%87%E5%88%86"><span class="toc-number">4.</span> <span class="toc-text">数据库的垂直切分与水平切分</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B0%B4%E5%B9%B3%E5%88%87%E5%88%86"><span class="toc-number">4.1.</span> <span class="toc-text">水平切分</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%B0%B4%E5%B9%B3%E5%88%87%E5%88%86%E7%9A%84%E7%94%A8%E9%80%94"><span class="toc-number">4.1.1.</span> <span class="toc-text">水平切分的用途</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%B0%B4%E5%B9%B3%E5%88%87%E5%88%86%E7%9A%84%E7%BC%BA%E7%82%B9"><span class="toc-number">4.1.2.</span> <span class="toc-text">水平切分的缺点</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9E%82%E7%9B%B4%E5%88%87%E5%88%86"><span class="toc-number">4.2.</span> <span class="toc-text">垂直切分</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%9E%82%E7%9B%B4%E5%88%87%E5%88%86%E7%9A%84%E7%94%A8%E9%80%94"><span class="toc-number">4.2.1.</span> <span class="toc-text">垂直切分的用途</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%9E%82%E7%9B%B4%E5%88%87%E5%88%86%E7%9A%84%E7%BC%BA%E7%82%B9"><span class="toc-number">4.2.2.</span> <span class="toc-text">垂直切分的缺点</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%85%88%E5%81%9A%E6%B0%B4%E5%B9%B3%E5%88%87%E5%88%86%E5%90%8E%E5%81%9A%E5%9E%82%E7%9B%B4%E5%88%87%E5%88%86"><span class="toc-number">4.3.</span> <span class="toc-text">为什么先做水平切分后做垂直切分</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MySQL%E4%BA%8B%E5%8A%A1"><span class="toc-number">5.</span> <span class="toc-text">MySQL事务</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%84%8F%E8%AF%BB"><span class="toc-number">5.1.</span> <span class="toc-text">脏读</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%8D%E5%8F%AF%E9%87%8D%E5%A4%8D%E8%AF%BB"><span class="toc-number">5.2.</span> <span class="toc-text">不可重复读</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B9%BB%E8%AF%BB"><span class="toc-number">5.3.</span> <span class="toc-text">幻读</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8B%E5%8A%A1%E7%9A%84ACID"><span class="toc-number">5.4.</span> <span class="toc-text">事务的ACID</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B4%A2%E5%BC%95"><span class="toc-number">6.</span> <span class="toc-text">索引</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#B-%E6%A0%91%E5%8E%9F%E7%90%86"><span class="toc-number">6.1.</span> <span class="toc-text">B+树原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#MySQL%E7%B4%A2%E5%BC%95"><span class="toc-number">6.2.</span> <span class="toc-text">MySQL索引</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#B-Tree%E7%B4%A2%E5%BC%95"><span class="toc-number">6.2.1.</span> <span class="toc-text">B+ Tree索引</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%B4%A2%E5%BC%95%E4%BC%98%E5%8C%96"><span class="toc-number">6.3.</span> <span class="toc-text">索引优化</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%8B%AC%E7%AB%8B%E7%9A%84%E5%88%97"><span class="toc-number">6.3.1.</span> <span class="toc-text">独立的列</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%A4%9A%E5%88%97%E7%B4%A2%E5%BC%95"><span class="toc-number">6.3.2.</span> <span class="toc-text">多列索引</span></a></li></ol></li></ol></li></ol></div></div><div class="author-info hide"><div class="author-info__avatar text-center"><img src="https://th.bing.com/th/id/R.ddf36bf62e6f5fff5bf8c74284c0983a?rik=gL1kHAzol0ZsCg&amp;riu=http%3a%2f%2fimg.jj20.com%2fup%2fallimg%2ftx26%2f420812170231383.jpg&amp;ehk=dftFXuBhZYOq24%2foZJxW6BcDBdLJRArAKByCS%2f7z1KQ%3d&amp;risl=&amp;pid=ImgRaw"></div><div class="author-info__name text-center">Laity&amp;</div><div class="author-info__description text-center">出发，永远是最有意义的事，去做就是了</div><hr><div class="author-info-articles"><a class="author-info-articles__archives article-meta" href="/archives"><span class="pull-left">Articles</span><span class="pull-right">51</span></a><a class="author-info-articles__tags article-meta" href="/tags"><span class="pull-left">Tags</span><span class="pull-right">37</span></a><a class="author-info-articles__categories article-meta" href="/categories"><span class="pull-left">Categories</span><span class="pull-right">29</span></a></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(https://th.bing.com/th/id/R.db1eab53ff269e5709d90f8b197fafb7?rik=zABgriNA09F1vA&amp;riu=http%3a%2f%2fwww.shijuepi.com%2fuploads%2fallimg%2f201128%2f1-20112QP934.jpg&amp;ehk=Lr%2f%2fq1LA75MkgirCJbR87lb7M%2bZJlTMtjvLaj6Bg0lE%3d&amp;risl=&amp;pid=ImgRaw)"><div id="page-header"><span class="pull-left"> <a id="site-name" href="/">Laity的日常博客</a></span><i class="fa fa-bars toggle-menu pull-right" aria-hidden="true"></i><span class="pull-right menus">   <a class="site-page" href="/">主页</a><a class="site-page" href="/archives">归档</a><a class="site-page" href="/tags">标签</a><a class="site-page" href="/categories">分类</a><a class="site-page" href="/about">关于作者</a></span><span class="pull-right"><a class="site-page social-icon search"><i class="fa fa-search"></i><span> Search</span></a></span></div><div id="post-info"><div id="post-title">MySQL复习</div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 2022-01-12</time><span class="post-meta__separator">|</span><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E5%8D%9A%E5%AE%A2/">博客</a><i class="fa fa-angle-right" aria-hidden="true"></i><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E5%8D%9A%E5%AE%A2/Java%E5%90%8E%E7%AB%AF/">Java后端</a><i class="fa fa-angle-right" aria-hidden="true"></i><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/%E5%8D%9A%E5%AE%A2/Java%E5%90%8E%E7%AB%AF/%E9%9D%A2%E8%AF%95/">面试</a><span class="post-meta__separator">|</span><i class="fa fa-comment-o post-meta__icon" aria-hidden="true"></i><a href="/2022/01/12/MySQL%E5%A4%8D%E4%B9%A0/#disqus_thread"><span class="disqus-comment-count" data-disqus-identifier="2022/01/12/MySQL复习/"></span></a></div></div></div><div class="layout" id="content-inner"><article id="post"><div class="article-container" id="post-content"><h3 id="MySQL的基础架构"><a href="#MySQL的基础架构" class="headerlink" title="MySQL的基础架构"></a>MySQL的基础架构</h3><img src="/2022/01/12/MySQL%E5%A4%8D%E4%B9%A0/image-20220112104351166.png" class title="image-20220112104351166">
+
+<p>简单来说MySQL主要分为Server层和存储引擎层：</p>
+<ul>
+<li>Server层主要包括连接器、查询缓存、分析器、优化器、执行器等，所有跨存储引擎的功能都在这一层实现，比如存储过程、触发器、视图、函数等，还有一个通用的日志模块binglog模块</li>
+<li>存储引擎：主要负责数据的存储和读取，采用可替换的插件式架构，支持InnoDB、MyISAM、Memory等多个存储引擎，其中InnoDB引擎有自己的日志模块redolog模块。现在最常用的存储引擎是InnoDB，它从MySQL5.5.5版本开始就被当做默认存储引擎</li>
+</ul>
+<p>对于更新等语句执行流程如下：分析器-&gt;权限校验-&gt;执行器-&gt;存储引擎-&gt;redo log prepare-&gt;binlog-&gt;redo log commit</p>
+<h4 id="为什么需要两个日志模块？-基于InnoDB"><a href="#为什么需要两个日志模块？-基于InnoDB" class="headerlink" title="为什么需要两个日志模块？(基于InnoDB)"></a>为什么需要两个日志模块？(基于InnoDB)</h4><p>InnoDB拥有自己的日志模块redo log，其它存储引擎都没有，这就会导致没有crash-safe的能力(crash-safe的能力即时数据库发生异常重启，之前提交的记录都不会丢失)，binlog日志只能用来归档。</p>
+<p>InnoDB就是通过redo log来支持事务的。当我们向数据库写入和修改数据时，InnoDB引擎会把数据保存在内存中，同时记录redo log，此时redo log进入prepare状态，然后告诉执行器，执行完成了，随时可以提交。执行器收到通知后记录binlog，然后调用引擎接口，提交redo log为提交状态。</p>
+<h4 id="redo-log要引入prepare预提交状态原因"><a href="#redo-log要引入prepare预提交状态原因" class="headerlink" title="redo log要引入prepare预提交状态原因"></a>redo log要引入prepare预提交状态原因</h4><p>通过反证法来证明：</p>
+<ul>
+<li>若先写redo log直接提交，然后写binlog，假设写完redo log，机器挂了，binlog日志没有被写入，那么机器重启后，这台机器会通过redo log恢复数据，但binlog中并未记录该数据，后续进行数据备份时，就会丢失这条数据，同时主从同步也会丢失一条数据</li>
+<li>若先写binlog，然后写redo log，假设写完binlog，机器重启了，由于redo log里没有该数据，所以本机是无法恢复该数据的，同样会造成数据不一致的问题</li>
+</ul>
+<p>若采用redo log两阶段提交的方式就不一样了，写完binlog后，然后再提交redo log就会避免上述问题，能够保证数据的一致性。<strong>若redo log处于预提交状态，binlog也已经写完了，这个时候发生了异常重启会怎么样？</strong></p>
+<p>这需要依赖于MySQL的处理机制，MySQL的处理过程如下：</p>
+<ul>
+<li>判断redo log是否完整，如果判断是完整的就立即提交</li>
+<li>如果redo log只是预提交但不是commit状态，这个时候就会去判断binlog是否完整，如果完整就提交redo log，不完整就会回滚事务。</li>
+</ul>
+<h3 id="Mysql基本数据类型"><a href="#Mysql基本数据类型" class="headerlink" title="Mysql基本数据类型"></a>Mysql基本数据类型</h3><h4 id="整型"><a href="#整型" class="headerlink" title="整型"></a>整型</h4><table>
+<thead>
+<tr>
+<th>数据类型</th>
+<th>字节数</th>
+<th>带符号最小值</th>
+<th>带符号最大值</th>
+<th>不带符号最小值</th>
+<th>不带符号最大值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>TINYINT</td>
+<td>1</td>
+<td>-128</td>
+<td>127</td>
+<td>0</td>
+<td>255</td>
+</tr>
+<tr>
+<td>SMALLINT</td>
+<td>2</td>
+<td>-32768</td>
+<td>32767</td>
+<td>0</td>
+<td>65535</td>
+</tr>
+<tr>
+<td>MEDIUMINT</td>
+<td>3</td>
+<td>-8388608</td>
+<td>8388607</td>
+<td>0</td>
+<td>16777215</td>
+</tr>
+<tr>
+<td>INT</td>
+<td>4</td>
+<td>-2147483648</td>
+<td>2147483647</td>
+<td>0</td>
+<td>4294967295</td>
+</tr>
+<tr>
+<td>BIGINT</td>
+<td>8</td>
+<td>-9223372036854775808</td>
+<td>9223372036854775807</td>
+<td>0</td>
+<td></td>
+</tr>
+</tbody></table>
+<h4 id="浮点型"><a href="#浮点型" class="headerlink" title="浮点型"></a>浮点型</h4><table>
+<thead>
+<tr>
+<th>数据类型</th>
+<th>字节数</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>float</td>
+<td>4</td>
+<td>单精度浮点型</td>
+</tr>
+<tr>
+<td>double</td>
+<td>8</td>
+<td>双精度浮点型</td>
+</tr>
+</tbody></table>
+<p>存在精度丢失的问题，写入数据库的数据未必是插入数据库的数据，可能存的是近似值</p>
+<h4 id="定点型"><a href="#定点型" class="headerlink" title="定点型"></a>定点型</h4><p>Decimal(M,D)：不存在精度丢失的问题，常用于银行、互联网金融等对小数点后的数字比较敏感的系统中。</p>
+<p>Decimal是以字符串形式进行存储的。</p>
+<h4 id="日期类型"><a href="#日期类型" class="headerlink" title="日期类型"></a>日期类型</h4><table>
+<thead>
+<tr>
+<th>数据类型</th>
+<th>字节数</th>
+<th>格式</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>date</td>
+<td>3</td>
+<td>yyyy-MM-dd</td>
+<td>存储日期值</td>
+</tr>
+<tr>
+<td>time</td>
+<td>3</td>
+<td>HH:mm:ss</td>
+<td>存储时分秒</td>
+</tr>
+<tr>
+<td>year</td>
+<td>1</td>
+<td>yyyy</td>
+<td>存储年</td>
+</tr>
+<tr>
+<td>datetime</td>
+<td>8</td>
+<td>yyyy-MM-dd HH:mm:ss</td>
+<td>存储日期+时间</td>
+</tr>
+<tr>
+<td>timestamp</td>
+<td>4</td>
+<td>yyyy-MM-dd HH:mm:ss</td>
+<td>存储日期+时间，可作时间戳</td>
+</tr>
+</tbody></table>
+<p>datetime与timestamp两种类型的区别：</p>
+<ul>
+<li>datetime占8个字节，timestamp占4个字节</li>
+<li>datetime能存储的时间范围为000-01-01 00:00:00——9999-12-31 23:59:59，timestamp存储的时间范围为19700101080001——20380119111407</li>
+<li>datetime值默认为空，当插入值为null时，该列的值就是null;timestamp默认值不为空，当插入值为null时，mysql会取当前时间。</li>
+<li>datetime存储的时间与时区无关，timestamp存储的时间及显示的时间都依赖于当前时区。</li>
+</ul>
+<h4 id="char类型和varchar类型"><a href="#char类型和varchar类型" class="headerlink" title="char类型和varchar类型"></a>char类型和varchar类型</h4><ul>
+<li>char是固定长度字符串，其长度范围为0~255且与编码方式无关，无论字符实际长度是多少，都会按照指定长度进行存储，不够的用空格补上</li>
+<li>char实际占用的字节数即存储的字符所占用的字节数，varchar实际占用的字节数为存储的字符+1或+2或+3</li>
+<li>mysql在处理char类型时会将结尾的所有空格处理掉而varchar类型数据则不会</li>
+</ul>
+<h4 id="text和blob"><a href="#text和blob" class="headerlink" title="text和blob"></a>text和blob</h4><p>这两种类型的设计初衷就算为了存储大数据使用的，Mysql单行最大数据为64k。</p>
+<p>text和varchar是一组既有区别也有联系的数据类型，其联系在于<strong>当varchar(M)的M大于某些数值时，varchar会自动转化为text</strong></p>
+<ul>
+<li>M&gt;255时转为tinytext</li>
+<li>M&gt;500时转为text</li>
+<li>M&gt;20000时转为mediumtext</li>
+</ul>
+<p>所以过大的内容varchar和text没有区别，varchar(M)和text的区别在于：</p>
+<ul>
+<li>单行64k即65535字节的空间，varchar只能用63352/65533字节，但是text可以65535个字节全部用起来</li>
+<li>text可以指定text(M)，但M无论等于多少都没有影响</li>
+<li>text不允许有默认值，varchar允许有默认值</li>
+</ul>
+<p>varchar和text两种数据类型，使用建议是能用varchar就用varchar而不用text（存储效率高），varchar(M)的M有长度限制，如果大于限制，可以使用mediumtext(16M)或longtext(4G)</p>
+<p>text存储的是字符串而blob存储的是二进制字符串，简单说blob是用于存储例如图片、音视频这种文件的二进制数据的。</p>
+<h3 id="Mysql语法"><a href="#Mysql语法" class="headerlink" title="Mysql语法"></a>Mysql语法</h3><h4 id="mysql基本sql语句"><a href="#mysql基本sql语句" class="headerlink" title="mysql基本sql语句"></a>mysql基本sql语句</h4><p><strong>表注释语句</strong></p>
+<p>创建表的时候写注释（包含表注释和字段注释）</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> `test1` ( </span><br><span class="line">    `field_name` <span class="type">int</span> comment <span class="string">&#x27;字段的注释&#x27;</span> </span><br><span class="line">)comment<span class="operator">=</span><span class="string">&#x27;表的注释&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>修改表的注释</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="string">&#x27;test1&#x27;</span> comment <span class="string">&#x27;修改后的表的注释&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>修改字段注释，此时的字段名和字段类型</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="string">&#x27;test1&#x27;</span> modify <span class="keyword">column</span> <span class="string">&#x27;field_name&#x27;</span> <span class="type">int</span> comment <span class="string">&#x27;修改后的字段注释&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p><strong>表添加字段</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="string">&#x27;tb_name&#x27;</span> <span class="keyword">add</span> <span class="string">&#x27;file_name&#x27;</span> <span class="type">varchar</span>(<span class="number">500</span>) <span class="keyword">not</span> <span class="keyword">null</span> <span class="keyword">default</span> <span class="string">&#x27;&#x27;</span> comment <span class="string">&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>表修改字段</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="string">&#x27;tb_name&#x27;</span> change <span class="string">&#x27;old_id&#x27;</span> <span class="string">&#x27;new_id&#x27;</span> <span class="type">int</span>(<span class="number">11</span>) <span class="keyword">default</span> <span class="keyword">null</span> comment <span class="string">&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>索引相关语句</strong></p>
+<p>alter table用来创建普通索引、UNIQUE索引或primary key索引</p>
+<p>其中table_name是要增加索引的表名，column_list指出对哪些列进行索引，多列时各列之间用逗号分隔。索引名index_name可选，缺省时，MySQL将根据第一个索引列赋一个名称。另外，alter table允许在单个语句中更改多个表，因此可以同时创建多个索引。</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="string">&#x27;table_name&#x27;</span> <span class="keyword">add</span> index index_name (column_list);</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="string">&#x27;table_name&#x27;</span> <span class="keyword">add</span> <span class="keyword">unique</span> (column_list);</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="string">&#x27;table_name&#x27;</span> <span class="keyword">add</span> <span class="keyword">primary</span> key(column_list);</span><br></pre></td></tr></table></figure>
+
+<p>删除索引</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="string">&#x27;table_name&#x27;</span> <span class="keyword">drop</span> index index_name;</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="string">&#x27;table_name&#x27;</span> <span class="keyword">drop</span> <span class="keyword">primary</span> key;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="MySQL变量"><a href="#MySQL变量" class="headerlink" title="MySQL变量"></a>MySQL变量</h4><p>MySQL的变量分为以下两种：</p>
+<ul>
+<li>系统变量：配置MySQL服务器的运行环境，可以用show variables查看</li>
+<li>状态变量：监控MySQL服务器的运行状态，可以用show status查看</li>
+</ul>
+<h5 id="系统变量"><a href="#系统变量" class="headerlink" title="系统变量"></a>系统变量</h5><p>系统变量按其作用域的不同可以分为以下两种：</p>
+<ul>
+<li>分为全局(GLOBAL)级：对整个MySQL服务器有效</li>
+<li>会话(SESSION或LOCAL)级：只影响当前会话</li>
+</ul>
+<p>有些变量同时拥有以上两个级别，MySQL将在建立连接时用全局变量初始化会话级变量，但一旦建立连接之后，全局级变量的改变不会影响到会话级变量。</p>
+<p>查看系统变量的值</p>
+<ul>
+<li><p>可以通过show variables语句查看系统变量的值</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">mysql<span class="operator">&gt;</span> <span class="keyword">show</span> variables <span class="keyword">like</span> <span class="string">&#x27;log%&#x27;</span>;</span><br><span class="line">mysql<span class="operator">&gt;</span> <span class="keyword">show</span> variables <span class="keyword">where</span> Variable_name <span class="keyword">like</span> <span class="string">&#x27;log%&#x27;</span> <span class="keyword">and</span> <span class="keyword">value</span><span class="operator">=</span><span class="string">&#x27;ON&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>注：show variables优先显示会话级变量的值，如果这个值不存在，则显示全局级变量的值，当然你也可以加上GLOBAL或SESSION关键字区别</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">show</span> <span class="keyword">global</span> variables;</span><br><span class="line"><span class="keyword">show</span> session<span class="operator">/</span><span class="keyword">local</span> variables;</span><br></pre></td></tr></table></figure></li>
+<li><p>也可以通过从INFORMATION_SCHEMA里的GLOBAL_VARIABLES和SESSION_VARIABLES表获得</p>
+</li>
+</ul>
+<p><strong>设置和修改系统变量的值</strong></p>
+<ul>
+<li><p>在MySQL服务器启动前，可以通过两种方法设置系统变量的值</p>
+<ul>
+<li>命令行参数，如：mysqld–max_connections=200</li>
+<li>选项文件(my.cnf)</li>
+</ul>
+</li>
+<li><p>在MySQL服务器启动后，如果需要修改系统变量的值，可以通过SET语句</p>
+<figure class="highlight cmd"><table><tr><td class="code"><pre><span class="line"><span class="built_in">set</span> global var_name=value</span><br><span class="line"><span class="built_in">set</span> @@GLOBAL.var_name=value</span><br><span class="line"><span class="built_in">set</span> SESSION var_name=value</span><br><span class="line"><span class="built_in">set</span> @@SESSION.var_name=value</span><br></pre></td></tr></table></figure>
+
+<p>注：若在变量名前没有级别限定符，表示修改会话级变量</p>
+</li>
+</ul>
+<p>单纯使用show variables的话就等同于使用的是show session variables，查询的是会话变量，只有使用show global variables，查询的才是全局变量。</p>
+<h5 id="状态变量"><a href="#状态变量" class="headerlink" title="状态变量"></a>状态变量</h5><p>状态变量可以使我们即时了解MySQL服务器的运行状况，可以使用show status语句查看。</p>
+<p>状态变量和相同变量类似，也分为全局级和会话级，show status也支持like匹配查询，比较大的不同是状态变量只能由MySQL服务器本身设置和修改，对用户来说是只读的</p>
+<h3 id="数据库的垂直切分与水平切分"><a href="#数据库的垂直切分与水平切分" class="headerlink" title="数据库的垂直切分与水平切分"></a>数据库的垂直切分与水平切分</h3><p>拆分数据库的顺序：先水平切分，然后再垂直切分</p>
+<h4 id="水平切分"><a href="#水平切分" class="headerlink" title="水平切分"></a>水平切分</h4><p>水平切分：按照某个字段的某种规则，把数据切分到多张数据表。一张数据表化整为零，拆分成多张数据表，这样就可以起到缩表的作用。</p>
+<p>水平切分出的数据表并非必须存储到不同的MySQL的节点上，其实水平切分出来的数据表也可以保存在一个MySQL节点上。不是水平切分一定需要多个MySQL节点。</p>
+<p>MySQL自带一种数据分区的技术，可以把一张表的数据，按照特殊规则，切分存储到不同的目录下。如果我们给Linux主机挂载了多块硬盘，我们完全可以利用MySQL分区技术，把一张表的数据切分存储到多个硬盘上。这样就由原来的一块硬盘有限的IO能力，升级成了多个磁盘增强型的IO</p>
+<h5 id="水平切分的用途"><a href="#水平切分的用途" class="headerlink" title="水平切分的用途"></a>水平切分的用途</h5><p>水平切分可以把数据切分到多张数据表，可以起到缩表的作用。</p>
+<h5 id="水平切分的缺点"><a href="#水平切分的缺点" class="headerlink" title="水平切分的缺点"></a>水平切分的缺点</h5><ul>
+<li><p>不同数据表的切分规则并不一致，要根据实际业务来确定。所以我们在选择数据库中间件产品的时候，就要选择切分规则丰富的产品。常见的数据库中间件有：Mycat、Atlas、ProxySQL</p>
+</li>
+<li><p>扩容比较麻烦，日积月累，分片迟早有不够用的时候。这时候不是首先选择增加新的集群分片。因为一个MySQL分片需要4-8个MySQL节点（最小规模），增加一个分片的投入成本是很高的。正确的做法是冷热数据分离，定期对分片中的数据进行归档。把过期的业务数据，从分片转移到归档库。目前来说数据压缩比最高的MySQL引擎是TokuDB，而且带事务的写入速度是InnoDB的6-14倍。用TokuDB作为归档数据库最合适不过</p>
+</li>
+</ul>
+<h4 id="垂直切分"><a href="#垂直切分" class="headerlink" title="垂直切分"></a>垂直切分</h4><p>根据业务来拆分数据库，同一类业务的数据表拆分到一个独立的数据库，另一类的数据表拆分到其它数据库</p>
+<h5 id="垂直切分的用途"><a href="#垂直切分的用途" class="headerlink" title="垂直切分的用途"></a>垂直切分的用途</h5><p>垂直切分可以降低单节点数据库的负载。原来所有的数据表都放在一个数据库节点中，无疑所有的读写请求也都发送到这个MySQL上，数据库的负载太高。如果把一个节点的数据库拆分成多个MySQL数据库，这样就可以有效降低每个MySQL数据库的负载。</p>
+<h5 id="垂直切分的缺点"><a href="#垂直切分的缺点" class="headerlink" title="垂直切分的缺点"></a>垂直切分的缺点</h5><p>垂直切分不能解决缩表的问题，因为无论拆分成多少个数据库，数据表中的数据还是那么多，MySQL单表记录超过2000万，读写性能会下降得很快。</p>
+<h4 id="为什么先做水平切分后做垂直切分"><a href="#为什么先做水平切分后做垂直切分" class="headerlink" title="为什么先做水平切分后做垂直切分"></a>为什么先做水平切分后做垂直切分</h4><p>随着数据量的增加，最先应该做的是数据分片，利用多块磁盘来增大数据IO能力和存储空间，这么做是成本最低的。</p>
+<p>若数据量继续增大，则进入下一个阶段，我们应该把数据切分到多个MySQL节点上，用Mycat管理数据切分。当然还要做数据的读写分离。在后台做水平切分的同时，业务系统也可以引入负载均衡、分布式架构等，理论上，使用了冷热数据分离之后，水平切分这种方式还可以继续持续很久，数据量再大也不怕，定期归档就行。</p>
+<p>数据库到了水平切分的阶段，数据量的增加已经不是更改架构的主要原因了。反而是这个阶段业务系统承受不住了，如果再不对系统做模块拆分，业务系统也支撑不下去了，所以按照模块和业务，把一个系统拆分成若干子系统。若干子系统之间，数据相对独立。</p>
+<h3 id="MySQL事务"><a href="#MySQL事务" class="headerlink" title="MySQL事务"></a>MySQL事务</h3><h4 id="脏读"><a href="#脏读" class="headerlink" title="脏读"></a>脏读</h4><p>概念：脏读就是B事务读到了A事务尚未提交的数据</p>
+<p>示例：</p>
+<p>将隔离级别设为read-uncommitted</p>
+<p>查看隔离级别</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select @@transaction_isolation;</span><br></pre></td></tr></table></figure>
+
+<img src="/2022/01/12/MySQL%E5%A4%8D%E4%B9%A0/image-20220120225418626.png" class title="image-20220120225418626">
+
+
+
+<p>开启事务</p>
+<img src="/2022/01/12/MySQL%E5%A4%8D%E4%B9%A0/image-20220120225533394.png" class title="image-20220120225533394">
+
+<p>在左边这个客户端，tom给lucy转钱1000，所以需要下面两个update语句，此时还未commit</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">update account <span class="keyword">set</span> money<span class="operator">=</span>money<span class="number">-1000</span> <span class="keyword">where</span> name<span class="operator">=</span><span class="string">&#x27;tom&#x27;</span>;</span><br><span class="line">update account <span class="keyword">set</span> money<span class="operator">=</span>money<span class="operator">+</span><span class="number">1000</span> <span class="keyword">where</span> name<span class="operator">=</span><span class="string">&#x27;lucy&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<img src="/2022/01/12/MySQL%E5%A4%8D%E4%B9%A0/image-20220120230021665.png" class title="image-20220120230021665">
+
+<p>从结果可以看到，我们可以看到还未提交的数据，这样就会造成一个问题，若此时tom给lucy打电话，告诉他钱已经转过去了，然后lucy也查询了钱数，发现钱确实到了，于是说好，但是此时如果tom那边的服务出了问题rollback了一下，这样lucy的钱就会变成3500，这样lucy就亏了。</p>
+<h4 id="不可重复读"><a href="#不可重复读" class="headerlink" title="不可重复读"></a>不可重复读</h4><p>一个事务中两次读取的数据的内容不一致就叫做不可重复读。</p>
+<p>解决办法：将隔离级别设置为repeat-read</p>
+<h4 id="幻读"><a href="#幻读" class="headerlink" title="幻读"></a>幻读</h4><p>一个事务中两次读取的数据的数量不一致。</p>
+<h4 id="事务的ACID"><a href="#事务的ACID" class="headerlink" title="事务的ACID"></a>事务的ACID</h4><p><strong>原子性（Atomicity）</strong></p>
+<p>概念：事务是不可分割的，指事务是一个不可分割的工作单位，事务中的操作要么都发生，要么都不发生。</p>
+<p>mysql里面一个sql语句默认也是一个事务。</p>
+<p><strong>一致性（Consistency）</strong></p>
+<p>保证数据在事务的执行周期内是一致的。</p>
+<p><strong>隔离性（Isolation）</strong></p>
+<p>事务的隔离性是指多个用户并发访问数据库时，一个用户的事务不能被其他用户的事务所干扰，多个并发事务之间数据要相互隔离。</p>
+<p><strong>持久性（Durability）</strong></p>
+<p>事务一旦被提交，就不可能再回滚。即一个事务一旦被提交，它对数据库中的改变就是永久性的，接下来即使数据库发生故障也不应该对其有任何影响。</p>
+<h3 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h3><h4 id="B-树原理"><a href="#B-树原理" class="headerlink" title="B+树原理"></a>B+树原理</h4><p>数据结构：</p>
+<p>B Tree指的是Banlance Tree，也就是平衡树。平衡树是一颗查找树，并且所有叶子节点位于同一层。B+ Tree是基于B Tree和叶子节点顺序访问指针进行实现，它具有B Tree的平衡性，并且通过顺序访问指针来提高区间查询的性能。</p>
+<p>在B+ Tree中，一个节点中的key从左到右非递减排序，如果某个指针的左右相邻key分别是keyi和keyi+1，且不为null，则该指针指向节点的所有key大于等于$key_i$且小于等于$key_{i+1}$</p>
+<img src="/2022/01/12/MySQL%E5%A4%8D%E4%B9%A0/image-20220121101358711.png" class title="image-20220121101358711">
+
+
+
+<p><strong>操作</strong></p>
+<p>进行查找操作时，首先在根节点进行二分查找，找到一个key所在的指针，然后递归地在指针所指向的节点进行查找。直到查找到叶子节点，然后在叶子节点上进行二分查找，找出key所对应的data。</p>
+<p>插入删除操作会破环平衡树的平衡性，因此在进行插入删除操作之后需要对树进行分裂，合并、旋转等操作来维护平衡性。</p>
+<p><strong>与红黑树的比较</strong></p>
+<p>红黑树等平衡树也可以用来实现索引，但是文件系统即数据库系统普遍采用B+ Tree作为索引结构，这是因为使用B+树访问磁盘数据有更高的性能。</p>
+<ol>
+<li><p>B+树有更低的树高</p>
+<p>平衡树的树高O(h)=O($log_d{N}$),其中d为每个节点的出度。红黑树的出度为2，而B+树的出度一般都非常大，所以红黑树的树高比B+树高得多</p>
+</li>
+<li><p>磁盘访问原理</p>
+<p>操作系统一般将内存和磁盘分割成固定大小的块，每一块称为一页，内存与磁盘以页为单位交换数据，数据库系统将索引的一个节点的大小设置为页的大小，使得一次I/O就能完全载入一个节点。</p>
+<p>如果数据不在同一个磁盘上，那么通常需要移动制动手臂进行寻道，而制动手臂因为其物理结构导致了移动效率低下，从而增加磁盘数据读取时间。B+树相对于红黑树有更低树高，进行寻道的次数与树高成正比，在同一个磁盘块上进行访问只需要很短的磁盘旋转时间，所以B+树更适合磁盘数据的读取</p>
+</li>
+<li><p>磁盘预读特性</p>
+<p>为了减少磁盘I/O操作，磁盘往往不是严格按需读取，而是每次都会预读。预读过程中，磁盘进行顺序读取，顺序读取不需要进行磁盘寻道，并且只需要很短的磁盘旋转时间，速度会非常快，并且可以利用预读特性，相邻的节点也能够被预先载入。</p>
+</li>
+</ol>
+<h4 id="MySQL索引"><a href="#MySQL索引" class="headerlink" title="MySQL索引"></a>MySQL索引</h4><p>索引是在存储引擎层实现的，而不是在服务器层实现的，所以不同存储引擎具有不同的索引类型和实现。</p>
+<h5 id="B-Tree索引"><a href="#B-Tree索引" class="headerlink" title="B+ Tree索引"></a>B+ Tree索引</h5><p>B+树索引是大多数MySQL存储引擎的默认存储类型。因为不需要进行全表扫描，只需要对树进行搜索即可，所以查找速度快很多。</p>
+<p>因为B+ Tree的有序性，所以除了用于查找，还可以用来排序和分组，可以指定多个列作为索引列，多个索引列共同组成键。</p>
+<p>适用于全键值、键值范围和键前缀查找，其中键前缀查找只适用于最左前缀查找。如果不是按照索引列的顺序查找，则无法使用索引。</p>
+<p>InnoDB的B+Tree索引分为主索引和辅助索引。主索引的叶子节点data域记录着完整的数据记录，这种索引方式被称为聚簇索引。因为无法把数据存储在两个不同的地方，所以一个表只能有一个聚簇索引。</p>
+<img src="/2022/01/12/MySQL%E5%A4%8D%E4%B9%A0/image-20220121120721442.png" class title="image-20220121120721442">
+
+<p>辅助索引的叶子节点的data域记录着主键的值，因此在使用辅助索引的时候，需要先查找主键的值，再根据主键的值进行查找数据。</p>
+<p>哈希索引</p>
+<p>哈希索引能以O(1)时间进行查找，但是失去了有序性</p>
+<ul>
+<li>无法用于排序与分组</li>
+<li>只支持精确查找，无法用于部分查找和范围查找</li>
+</ul>
+<p>InnoDB存储引擎有一个特殊的功能叫做“自适应哈希索引”，当某个索引被使用的非常频繁时，会在B+ Tree索引之上在再创建一个哈希索引，这样就让B+ Tree索引具有哈希索引的一些特点，比如快速的哈希查找。</p>
+<p>全文索引</p>
+<p>MyISAM存储引擎支持全文索引，用于查找文本中的关键词，而不是直接比较是否相等。查找条件使用match against ，而不是普通的where。全文索引使用倒排索引实现，它记录着关键词到其所在文档的映射。InnoDB存储引擎在MySQL5.6.4版本中也开始支持全文索引。</p>
+<p>空间数据索引</p>
+<p>MyISAM存储引擎支持空间数据索引(R-Tree)，可以用于地理数据存储。空间数据索引会从所有维度来索引数据，可以有效地使用任意维度来进行组合查询。必须使用GIS相关函数来维护数据。</p>
+<h4 id="索引优化"><a href="#索引优化" class="headerlink" title="索引优化"></a>索引优化</h4><h5 id="独立的列"><a href="#独立的列" class="headerlink" title="独立的列"></a>独立的列</h5><p>在进行查询时，索引列不能是表达式的一部分，也不能是函数的参数，否则无法使用索引。例如下面的查询不能使用actor_id列的的索引：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select actor_id from actor where actor_id+1=5;</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="多列索引"><a href="#多列索引" class="headerlink" title="多列索引"></a>多列索引</h5><p>在需要使用多个列作为条件进行查询时，使用多列索引比多个单列索引性能更好。例如下面的语句中，最好把actor_id和film_id设置为多列索引</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">SELECT film_id, actor_ id FROM sakila.film_actor</span><br><span class="line">WHERE actor_id = 1 AND film_id = 1;</span><br></pre></td></tr></table></figure>
+
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Laity&amp;</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://polaris-ux.github.io/2022/01/12/MySQL复习/">https://polaris-ux.github.io/2022/01/12/MySQL复习/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="post-meta__tag-list"></div><nav id="pagination"><div class="prev-post pull-left"><a href="/2022/01/19/java%E7%BA%BF%E7%A8%8B%E6%B1%A0/"><i class="fa fa-chevron-left">  </i><span>java线程池</span></a></div><div class="next-post pull-right"><a href="/2022/01/06/lamdba%E8%A1%A8%E8%BE%BE%E5%BC%8F%E7%9A%84%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/"><span>lamdba表达式的基本使用</span><i class="fa fa-chevron-right"></i></a></div></nav><div id="disqus_thread"></div><script>var unused = null;
+var disqus_config = function () {
+  this.page.url = 'https://polaris-ux.github.io/2022/01/12/MySQL%E5%A4%8D%E4%B9%A0/';
+  this.page.identifier = '2022/01/12/MySQL复习/';
+  this.page.title = 'MySQL复习';
+}
+var d = document, s = d.createElement('script');
+s.src = "https://" + 'polaris-4' +".disqus.com/embed.js";
+s.setAttribute('data-timestamp', '' + +new Date());
+(d.head || d.body).appendChild(s);</script><script id="dsq-count-scr" src="https://polaris-4.disqus.com/count.js" async></script></div></div><footer class="footer-bg" style="background-image: url(https://th.bing.com/th/id/R.db1eab53ff269e5709d90f8b197fafb7?rik=zABgriNA09F1vA&amp;riu=http%3a%2f%2fwww.shijuepi.com%2fuploads%2fallimg%2f201128%2f1-20112QP934.jpg&amp;ehk=Lr%2f%2fq1LA75MkgirCJbR87lb7M%2bZJlTMtjvLaj6Bg0lE%3d&amp;risl=&amp;pid=ImgRaw)"><div class="layout" id="footer"><div class="copyright">&copy;2013 - 2022 By Laity&</div><div class="framework-info"><span>Driven - </span><a target="_blank" rel="noopener" href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>Theme - </span><a target="_blank" rel="noopener" href="https://github.com/Molunerfinn/hexo-theme-melody"><span>Melody</span></a></div><div class="footer_custom_text">hitokoto</div><div class="busuanzi"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span id="busuanzi_container_page_pv"><i class="fa fa-file"></i><span id="busuanzi_value_page_pv"></span><span></span></span></div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@latest/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-ui-pack@latest/velocity.ui.min.js"></script><script src="/js/utils.js?version=1.9.0"></script><script src="/js/fancybox.js?version=1.9.0"></script><script src="/js/sidebar.js?version=1.9.0"></script><script src="/js/copy.js?version=1.9.0"></script><script src="/js/fireworks.js?version=1.9.0"></script><script src="/js/transition.js?version=1.9.0"></script><script src="/js/scroll.js?version=1.9.0"></script><script src="/js/head.js?version=1.9.0"></script><script src="/js/search/local-search.js"></script><script id="ribbon" src="/js/third-party/canvas-ribbon.js" size="150" alpha="0.6" zIndex="-1" data-click="false"></script><script>if(/Android|webOS|iPhone|iPod|iPad|BlackBerry/i.test(navigator.userAgent)) {
+  $('#nav').addClass('is-mobile')
+  $('footer').addClass('is-mobile')
+  $('#top-container').addClass('is-mobile')
+}</script><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">Local search</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts"></div></div></div><hr><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>Powered by</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a></div></div></div><span class="search-close-button"><i class="fa fa-times"></i></span></div><div class="search-mask"></div></body></html>
