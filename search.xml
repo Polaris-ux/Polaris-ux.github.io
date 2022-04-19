@@ -8,9 +8,25 @@
       <link href="/2022/04/19/%E4%BA%9A%E4%BF%A1%E4%B8%80%E9%9D%A2/"/>
       <url>/2022/04/19/%E4%BA%9A%E4%BF%A1%E4%B8%80%E9%9D%A2/</url>
       
-        <content type="html"><![CDATA[]]></content>
+        <content type="html"><![CDATA[<h3 id="亚信一面"><a href="#亚信一面" class="headerlink" title="亚信一面"></a>亚信一面</h3><p>自我介绍</p><p>面试官想问项目的，结果我的简历在面试官那好像啥也看不到😂</p><p>对java特性的理解(封装、继承、多态)</p><p>了解的设计模式(答了单例、工厂、适配器、策略模式等)</p><p>mysql的索引</p><p>存储引擎InnoDB、MyISAM的区别</p><p>慢SQL查询分析</p><p>Mysql死锁是啥？如果解决？</p><p>Redis的数据类型？</p><p>还有没有使用过其它数据库？其它NoSQL数据库</p><p>了解MQ嘛？（其实学过RabbitMQ，因为不熟悉所以直接回答的不了解）</p><p>整体面试问的比较基础(主要是没有项目可问)，面试官也很好，面试中有说有笑，还跟我大概介绍了一下他们部门的业务，以及一些学习方法，还跟我说尽力向二面面试官推一下。</p>]]></content>
       
       
+      <categories>
+          
+          <category> 博客 </category>
+          
+          <category> Java后端 </category>
+          
+          <category> 面经 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 面经 </tag>
+            
+        </tags>
       
     </entry>
     
